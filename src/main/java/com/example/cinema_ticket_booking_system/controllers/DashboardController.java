@@ -22,19 +22,16 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane contentPane;
 
-    // Default button style
-    private final String DEFAULT_BUTTON_STYLE = "-fx-background-color: transparent; -fx-text-fill: white;";
-    
     // Active button style
     private final String ACTIVE_BUTTON_STYLE = "-fx-background-color: #007bff; -fx-text-fill: white;";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Load home view by default when dashboard is opened
+        // Load the home view by default when the dashboard is opened
         try {
             loadHomeView();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error loading home view: " + e.getMessage());
         }
     }
 
@@ -51,7 +48,7 @@ public class DashboardController implements Initializable {
     private void loadHomeView() throws IOException {
         resetButtonStyles();
         homeButton.setStyle(ACTIVE_BUTTON_STYLE);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("views/HomeView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.getFxmlUrl("HomeView.fxml"));
         AnchorPane homeView = fxmlLoader.load();
         setContentPane(homeView);
     }
@@ -59,13 +56,14 @@ public class DashboardController implements Initializable {
     private void loadAdminView() throws IOException {
         resetButtonStyles();
         adminButton.setStyle(ACTIVE_BUTTON_STYLE);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("views/AdminView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.getFxmlUrl("AdminView.fxml"));
         AnchorPane adminView = fxmlLoader.load();
         setContentPane(adminView);
     }
     
     private void resetButtonStyles() {
-        // Reset all buttons to default style
+        // Reset all buttons to the default style
+        String DEFAULT_BUTTON_STYLE = "-fx-background-color: transparent; -fx-text-fill: white;";
         homeButton.setStyle(DEFAULT_BUTTON_STYLE);
         adminButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
