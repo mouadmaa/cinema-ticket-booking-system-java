@@ -47,7 +47,7 @@ public class DashboardController implements Initializable {
         AnchorPane homeView = fxmlLoader.load();
         setContentPane(homeView);
     }
-
+    
     private void loadAdminView() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("views/AdminView.fxml"));
         AnchorPane adminView = fxmlLoader.load();
