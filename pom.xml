@@ -7,7 +7,7 @@
     <groupId>com.example</groupId>
     <artifactId>cinema_ticket_booking_system</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Cinema Ticket Booking System</name>
+    <name>Cinema Ticket Booking Dashboard</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

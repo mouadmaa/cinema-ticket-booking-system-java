@@ -15,7 +15,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 900, 500);
         // Add BootstrapFX stylesheet
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        stage.setTitle("Cinema Ticket Booking System");
+        stage.setTitle("Cinema Ticket Booking Dashboard");
         stage.setScene(scene);
         stage.show();
     }

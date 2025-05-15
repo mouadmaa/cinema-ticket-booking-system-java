@@ -22,6 +22,12 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane contentPane;
 
+    // Default button style
+    private final String DEFAULT_BUTTON_STYLE = "-fx-background-color: transparent; -fx-text-fill: white;";
+    
+    // Active button style
+    private final String ACTIVE_BUTTON_STYLE = "-fx-background-color: #007bff; -fx-text-fill: white;";
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Load home view by default when dashboard is opened
@@ -43,15 +49,25 @@ public class DashboardController implements Initializable {
     }
 
     private void loadHomeView() throws IOException {
+        resetButtonStyles();
+        homeButton.setStyle(ACTIVE_BUTTON_STYLE);
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("views/HomeView.fxml"));
         AnchorPane homeView = fxmlLoader.load();
         setContentPane(homeView);
     }
     
     private void loadAdminView() throws IOException {
+        resetButtonStyles();
+        adminButton.setStyle(ACTIVE_BUTTON_STYLE);
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("views/AdminView.fxml"));
         AnchorPane adminView = fxmlLoader.load();
         setContentPane(adminView);
+    }
+    
+    private void resetButtonStyles() {
+        // Reset all buttons to default style
+        homeButton.setStyle(DEFAULT_BUTTON_STYLE);
+        adminButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
 
     private void setContentPane(AnchorPane view) {
