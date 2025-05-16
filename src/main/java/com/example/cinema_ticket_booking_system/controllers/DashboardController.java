@@ -31,7 +31,7 @@ public class DashboardController implements Initializable {
         try {
             loadHomeView();
         } catch (IOException e) {
-            System.out.println("Error loading home view: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

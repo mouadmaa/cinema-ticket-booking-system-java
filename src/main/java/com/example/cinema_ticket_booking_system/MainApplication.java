@@ -3,6 +3,7 @@ package com.example.cinema_ticket_booking_system;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
@@ -13,17 +14,27 @@ import java.net.URL;
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Load FXML from the Java directory instead of resources
-        URL fxmlUrl = new File("src/main/java/com/example/cinema_ticket_booking_system/views/Dashboard.fxml").toURI().toURL();
-        FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
-        Scene scene = new Scene(fxmlLoader.load(), 900, 500);
+        try {
+            // Load FXML from the Java directory instead of resources
+            URL fxmlUrl = getFxmlUrl("Dashboard.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
+            Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
+    
+            // Add BootstrapFX stylesheet
+            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
 
-        // Add BootstrapFX stylesheet
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-
-        stage.setTitle("Cinema Ticket Booking Dashboard");
-        stage.setScene(scene);
-        stage.show();
+            stage.setTitle("Cinema Ticket Booking Dashboard");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Show error in a more user-friendly way
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Application Error");
+            alert.setHeaderText("Error Starting Application");
+            alert.setContentText("Error: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     public static void main(String[] args) {
@@ -35,7 +46,7 @@ public class MainApplication extends Application {
         try {
             return new File("src/main/java/com/example/cinema_ticket_booking_system/views/" + fxmlFileName).toURI().toURL();
         } catch (IOException e) {
-            System.out.println("Error loading home view: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
