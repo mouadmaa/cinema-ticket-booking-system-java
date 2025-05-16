@@ -1,14 +1,21 @@
 package com.example.cinema_ticket_booking_system.controllers;
 
+import com.example.cinema_ticket_booking_system.MainApplication;
 import com.example.cinema_ticket_booking_system.models.SingletonConnection;
 import com.example.cinema_ticket_booking_system.models.UserModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -48,26 +55,29 @@ public class UserController implements Initializable {
     
     @FXML
     private Button prevButton;
-    
+
     @FXML
     private Button nextButton;
-    
+
     @FXML
     private Label pageLabel;
-    
+
+    @FXML
+    private Button addUserButton;
+
     private int currentPage = 1;
     private final int pageSize = 10;
     private int totalPages = 0;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupTableColumns();
         loadUsers();
-        
+
         // Configure table to automatically resize columns to fit content
         userTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
-    
+
     private void setupTableColumns() {
         // Use lambda instead of PropertyValueFactory for more reliable binding
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
@@ -79,7 +89,7 @@ public class UserController implements Initializable {
         phoneNumberColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
         createdAtColumn.setCellValueFactory(cellData -> cellData.getValue().createdAtProperty());
         updatedAtColumn.setCellValueFactory(cellData -> cellData.getValue().updatedAtProperty());
-        
+
         // Set column proportional widths based on content
         idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 5); // 5% width
         roleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
@@ -90,7 +100,7 @@ public class UserController implements Initializable {
         phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 11); // 11% width
         createdAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 9); // 9% width
         updatedAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 9); // 9% width
-        
+
         // Format date columns
         createdAtColumn.setCellFactory(column -> new TableCell<>() {
             @Override
@@ -103,7 +113,7 @@ public class UserController implements Initializable {
                 }
             }
         });
-        
+
         updatedAtColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
@@ -116,10 +126,10 @@ public class UserController implements Initializable {
             }
         });
     }
-    
+
     private void loadUsers() {
         ObservableList<UserModel> users = FXCollections.observableArrayList();
-        
+
         try (Connection connection = SingletonConnection.getConnection()) {
             // Count total users to calculate pagination
             String countQuery = "SELECT COUNT(*) FROM Users";
@@ -130,17 +140,17 @@ public class UserController implements Initializable {
                     totalPages = (int) Math.ceil((double) totalUsers / pageSize);
                 }
             }
-            
+
             // Fetch users for the current page
             String query = "SELECT id, role, first_name, last_name, username, email, phone_number, created_at, updated_at " +
                     "FROM Users ORDER BY id LIMIT ? OFFSET ?";
-            
+
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, pageSize);
                 statement.setInt(2, (currentPage - 1) * pageSize);
-                
+
                 ResultSet resultSet = statement.executeQuery();
-                
+
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
                     String role = resultSet.getString("role");
@@ -151,34 +161,34 @@ public class UserController implements Initializable {
                     String phoneNumber = resultSet.getString("phone_number");
                     Timestamp createdAtTimestamp = resultSet.getTimestamp("created_at");
                     Timestamp updatedAtTimestamp = resultSet.getTimestamp("updated_at");
-                    
+
                     LocalDateTime createdAt = createdAtTimestamp != null ? createdAtTimestamp.toLocalDateTime() : null;
                     LocalDateTime updatedAt = updatedAtTimestamp != null ? updatedAtTimestamp.toLocalDateTime() : null;
-                    
+
                     UserModel user = new UserModel(id, role, firstName, lastName, username, email, phoneNumber, createdAt, updatedAt);
                     users.add(user);
                 }
             }
-            
+
             userTableView.setItems(users);
             updatePaginationControls();
-            
+
             // Ensure columns fit the data after loading
             autoResizeColumns();
-            
+
         } catch (SQLException e) {
             showErrorAlert("Database Error", "Could not connect to the database", e.getMessage());
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Adjust columns to fit content after data is loaded
      */
     private void autoResizeColumns() {
         // Ensure the table uses all available width
         userTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        
+
         // Optionally force a resize for all columns
         userTableView.getColumns().forEach(column -> {
             // Trick to refresh the column width calculations
@@ -186,7 +196,7 @@ public class UserController implements Initializable {
             column.setPrefWidth(width);
         });
     }
-    
+
     @FXML
     private void handlePrevButton(ActionEvent event) {
         if (currentPage > 1) {
@@ -194,7 +204,7 @@ public class UserController implements Initializable {
             loadUsers();
         }
     }
-    
+
     @FXML
     private void handleNextButton(ActionEvent event) {
         if (currentPage < totalPages) {
@@ -202,18 +212,44 @@ public class UserController implements Initializable {
             loadUsers();
         }
     }
-    
+
     private void updatePaginationControls() {
         pageLabel.setText("Page " + currentPage + " of " + totalPages);
         prevButton.setDisable(currentPage <= 1);
         nextButton.setDisable(currentPage >= totalPages);
     }
-    
+
     private void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleAddUserButton(ActionEvent event) {
+        try {
+            // Load the add user form FXML
+            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("AddUserForm.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set callback to refresh user table after save
+            AddUserFormController controller = loader.getController();
+            controller.setRefreshCallback(this::loadUsers);
+
+            // Create a new stage for the dialog
+            Stage stage = new Stage();
+            stage.setTitle("Add New User");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
+
+            // Show the dialog and wait for it to close
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            showErrorAlert("Error", "Could not open the add user form", e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
