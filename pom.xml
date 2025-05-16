@@ -99,7 +99,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.cinema_ticket_booking_system/com.example.cinema_ticket_booking_system.HelloApplication
+                                com.example.cinema_ticket_booking_system/com.example.cinema_ticket_booking_system.MainApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import com.example.cinema_ticket_booking_system.HelloApplication;
+import com.example.cinema_ticket_booking_system.MainApplication;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +17,7 @@ public class DashboardController implements Initializable {
     private Button homeButton;
 
     @FXML
-    private Button adminButton;
+    private Button userButton;
 
     @FXML
     private AnchorPane contentPane;
@@ -41,31 +41,31 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    private void handleAdminButton() throws IOException {
-        loadAdminView();
+    private void handleUserButton() throws IOException {
+        loadUserView();
     }
 
     private void loadHomeView() throws IOException {
         resetButtonStyles();
         homeButton.setStyle(ACTIVE_BUTTON_STYLE);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.getFxmlUrl("HomeView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("HomeView.fxml"));
         AnchorPane homeView = fxmlLoader.load();
         setContentPane(homeView);
     }
     
-    private void loadAdminView() throws IOException {
+    private void loadUserView() throws IOException {
         resetButtonStyles();
-        adminButton.setStyle(ACTIVE_BUTTON_STYLE);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.getFxmlUrl("AdminView.fxml"));
-        AnchorPane adminView = fxmlLoader.load();
-        setContentPane(adminView);
+        userButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("UserView.fxml"));
+        AnchorPane userView = fxmlLoader.load();
+        setContentPane(userView);
     }
     
     private void resetButtonStyles() {
         // Reset all buttons to the default style
         String DEFAULT_BUTTON_STYLE = "-fx-background-color: transparent; -fx-text-fill: white;";
         homeButton.setStyle(DEFAULT_BUTTON_STYLE);
-        adminButton.setStyle(DEFAULT_BUTTON_STYLE);
+        userButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
 
     private void setContentPane(AnchorPane view) {

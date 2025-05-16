@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class HelloApplication extends Application {
+public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load FXML from the Java directory instead of resources

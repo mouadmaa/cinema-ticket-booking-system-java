@@ -12,8 +12,8 @@
       <HBox prefHeight="50.0" prefWidth="800.0" style="-fx-background-color: #343a40;">
          <Button fx:id="homeButton" mnemonicParsing="false" onAction="#handleHomeButton" prefHeight="50.0"
                  prefWidth="100.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Home"/>
-         <Button fx:id="adminButton" mnemonicParsing="false" onAction="#handleAdminButton" prefHeight="50.0"
-                 prefWidth="100.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Admins"/>
+         <Button fx:id="userButton" mnemonicParsing="false" onAction="#handleUserButton" prefHeight="50.0"
+                 prefWidth="100.0" style="-fx-background-color: transparent; -fx-text-fill: white;" text="Users"/>
       </HBox>
       <AnchorPane fx:id="contentPane" prefHeight="550.0" prefWidth="800.0" VBox.vgrow="ALWAYS"/>
    </VBox>
