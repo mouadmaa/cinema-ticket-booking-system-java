@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" 
             style="-fx-background-color: #37474F;" 
@@ -36,6 +37,9 @@
                           graphicTextGap="10.0" onAction="#handleHomeButton" prefHeight="50.0" 
                           prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;" 
                           text="Home">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="HOME" size="16" />
+                    </graphic>
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>
@@ -50,6 +54,23 @@
                           graphicTextGap="10.0" onAction="#handleUserButton" prefHeight="50.0" 
                           prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;" 
                           text="Users">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="16" />
+                    </graphic>
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </JFXButton>
+                <JFXButton fx:id="movieButton" alignment="BASELINE_LEFT" buttonType="RAISED" 
+                          graphicTextGap="10.0" onAction="#handleMovieButton" prefHeight="50.0" 
+                          prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;" 
+                          text="Movies">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="FILM" size="16" />
+                    </graphic>
                     <font>
                         <Font name="System Bold" size="14.0" />
                     </font>

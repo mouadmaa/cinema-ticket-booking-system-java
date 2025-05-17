@@ -3,8 +3,12 @@ package com.example.cinema_ticket_booking_system.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.event.ActionEvent;
+import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.paint.Paint;
 import com.example.cinema_ticket_booking_system.MainApplication;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
@@ -22,6 +26,9 @@ public class DashboardController implements Initializable {
     
     @FXML
     private Button userButton;
+
+    @FXML
+    private Button movieButton;
 
     @FXML
     private AnchorPane contentPane;
@@ -48,6 +55,11 @@ public class DashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+            
+    @FXML
+    private void handleMovieButton() throws IOException {
+        loadMovieView();
+    }
 
     private void setupButtonIcons() {
         // Create a home icon
@@ -64,9 +76,19 @@ public class DashboardController implements Initializable {
         userButton.setGraphic(userIcon);
         userButton.setGraphicTextGap(10);
         
+        // Create a movie icon for the movie management button
+        FontAwesomeIconView movieIcon = new FontAwesomeIconView(FontAwesomeIcon.FILM);
+        movieIcon.setSize("18");
+        movieIcon.setFill(Color.WHITE);
+        movieButton.setGraphic(movieIcon);
+        movieButton.setGraphicTextGap(10);
+        movieButton.setGraphicTextGap(10);
+        
         // Apply styling to buttons
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
+        movieButton.getStyleClass().add("dashboard-button");
+        movieButton.getStyleClass().add("dashboard-button");
     }
 
     @FXML
@@ -95,11 +117,21 @@ public class DashboardController implements Initializable {
         setContentPane(userView);
     }
     
+    private void loadMovieView() throws IOException {
+        resetButtonStyles();
+        movieButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("MovieView.fxml"));
+        AnchorPane movieView = fxmlLoader.load();
+        setContentPane(movieView);
+    }
+    
     private void resetButtonStyles() {
         // Reset all buttons to the default style
         String DEFAULT_BUTTON_STYLE = "-fx-background-color: #263238; -fx-text-fill: white;";
         homeButton.setStyle(DEFAULT_BUTTON_STYLE);
         userButton.setStyle(DEFAULT_BUTTON_STYLE);
+        movieButton.setStyle(DEFAULT_BUTTON_STYLE);
+        movieButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
 
     private void setContentPane(AnchorPane view) {

@@ -2,7 +2,7 @@ package com.example.cinema_ticket_booking_system.controllers;
 
 import com.example.cinema_ticket_booking_system.MainApplication;
 import com.example.cinema_ticket_booking_system.SingletonConnection;
-import com.example.cinema_ticket_booking_system.models.UserModel;
+import com.example.cinema_ticket_booking_system.models.MovieModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,43 +20,40 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class UserController implements Initializable {
+public class MovieController implements Initializable {
 
     @FXML
-    private TableView<UserModel> userTableView;
+    private TableView<MovieModel> movieTableView;
     
     @FXML
-    private TableColumn<UserModel, Integer> idColumn;
+    private TableColumn<MovieModel, Integer> idColumn;
     
     @FXML
-    private TableColumn<UserModel, String> roleColumn;
+    private TableColumn<MovieModel, String> titleColumn;
     
     @FXML
-    private TableColumn<UserModel, String> firstNameColumn;
+    private TableColumn<MovieModel, String> genreColumn;
     
     @FXML
-    private TableColumn<UserModel, String> lastNameColumn;
+    private TableColumn<MovieModel, Integer> durationColumn;
     
     @FXML
-    private TableColumn<UserModel, String> usernameColumn;
+    private TableColumn<MovieModel, LocalDate> releaseDateColumn;
     
     @FXML
-    private TableColumn<UserModel, String> emailColumn;
+    private TableColumn<MovieModel, String> descriptionColumn;
     
     @FXML
-    private TableColumn<UserModel, String> phoneNumberColumn;
-    
-    @FXML
-    private TableColumn<UserModel, Void> actionsColumn;
+    private TableColumn<MovieModel, Void> actionsColumn;
     
     @FXML
     private Button prevButton;
@@ -68,7 +65,7 @@ public class UserController implements Initializable {
     private Label pageLabel;
     
     @FXML
-    private Button addUserButton;
+    private Button addMovieButton;
 
     private int currentPage = 1;
     private final int pageSize = 50;
@@ -77,17 +74,17 @@ public class UserController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Apply style to table
-        userTableView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
+        movieTableView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
         
         // Style pagination and control buttons with FontAwesome icons
         setupButtons();
         
         // Setup table columns and load data
         setupTableColumns();
-        loadUsers();
+        loadMovies();
     
         // Configure table to automatically resize columns to fit content
-        userTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        movieTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
     private void setupButtons() {
@@ -105,12 +102,12 @@ public class UserController implements Initializable {
         nextButton.setGraphic(nextIcon);
         nextButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
         
-        // Style the add user button with a user plus icon
+        // Style the add movie button with a film icon
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView addIcon = 
-            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.USER_PLUS);
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.FILM);
         addIcon.setFill(javafx.scene.paint.Color.WHITE);
-        addUserButton.setGraphic(addIcon);
-        addUserButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
+        addMovieButton.setGraphic(addIcon);
+        addMovieButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
         
         // Style the page label
         pageLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #455A64;");
@@ -119,21 +116,19 @@ public class UserController implements Initializable {
     private void setupTableColumns() {
         // Use lambda instead of PropertyValueFactory for more reliable binding
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
-        roleColumn.setCellValueFactory(cellData -> cellData.getValue().roleProperty());
-        firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
-        lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
-        usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
-        emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-        phoneNumberColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
+        titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+        genreColumn.setCellValueFactory(cellData -> cellData.getValue().genreProperty());
+        durationColumn.setCellValueFactory(cellData -> cellData.getValue().durationProperty().asObject());
+        releaseDateColumn.setCellValueFactory(cellData -> cellData.getValue().releaseDateProperty());
+        descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
         
         // Set column proportional widths based on content
         idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 5); // 5% width
-        roleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        firstNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
-        lastNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
-        usernameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 22); // 22% width
-        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 16); // 16% width
+        titleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 25% width
+        genreColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        durationColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        releaseDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
+        descriptionColumn.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 30% width
         actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
         
         // Set minimum width for actions column to ensure buttons fit
@@ -142,27 +137,75 @@ public class UserController implements Initializable {
         // Set alignment for actions column to center
         actionsColumn.setStyle("-fx-alignment: CENTER;");
         
+        // Format duration column to display as hours and minutes
+        durationColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    int hours = item / 60;
+                    int minutes = item % 60;
+                    if (hours > 0) {
+                        setText(hours + " hr " + (minutes > 0 ? minutes + " min" : ""));
+                    } else {
+                        setText(minutes + " min");
+                    }
+                }
+            }
+        });
+        
+        // Format release date column
+        releaseDateColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toString());
+                }
+            }
+        });
+        
+        // Limit description text and add tooltip for full text
+        descriptionColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    String text = item.length() > 50 ? item.substring(0, 47) + "..." : item;
+                    setText(text);
+                    setTooltip(new Tooltip(item));
+                }
+            }
+        });
+        
         // Configure the actions column with update and delete buttons
         setupActionsColumn();
     }
 
-    private void loadUsers() {
-        ObservableList<UserModel> users = FXCollections.observableArrayList();
+    private void loadMovies() {
+        ObservableList<MovieModel> movies = FXCollections.observableArrayList();
 
         try (Connection connection = SingletonConnection.getConnection()) {
-            // Count total users to calculate pagination
-            String countQuery = "SELECT COUNT(*) FROM Users";
+            // Count total movies to calculate pagination
+            String countQuery = "SELECT COUNT(*) FROM Movies";
             try (PreparedStatement countStatement = connection.prepareStatement(countQuery)) {
                 ResultSet countResult = countStatement.executeQuery();
                 if (countResult.next()) {
-                    int totalUsers = countResult.getInt(1);
-                    totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+                    int totalMovies = countResult.getInt(1);
+                    totalPages = (int) Math.ceil((double) totalMovies / pageSize);
                 }
             }
 
-            // Fetch users for the current page
-            String query = "SELECT id, role, first_name, last_name, username, email, phone_number " +
-                    "FROM Users ORDER BY id LIMIT ? OFFSET ?";
+            // Fetch movies for the current page
+            String query = "SELECT id, title, genre, duration, release_date, description " +
+                    "FROM Movies ORDER BY id LIMIT ? OFFSET ?";
     
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, pageSize);
@@ -172,19 +215,19 @@ public class UserController implements Initializable {
     
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
-                    String role = resultSet.getString("role");
-                    String firstName = resultSet.getString("first_name");
-                    String lastName = resultSet.getString("last_name");
-                    String username = resultSet.getString("username");
-                    String email = resultSet.getString("email");
-                    String phoneNumber = resultSet.getString("phone_number");
+                    String title = resultSet.getString("title");
+                    String genre = resultSet.getString("genre");
+                    int duration = resultSet.getInt("duration");
+                    Date releaseDateSql = resultSet.getDate("release_date");
+                    LocalDate releaseDate = releaseDateSql.toLocalDate();
+                    String description = resultSet.getString("description");
     
-                    UserModel user = new UserModel(id, role, firstName, lastName, username, email, phoneNumber);
-                    users.add(user);
+                    MovieModel movie = new MovieModel(id, title, genre, duration, releaseDate, description);
+                    movies.add(movie);
                 }
             }
 
-            userTableView.setItems(users);
+            movieTableView.setItems(movies);
             updatePaginationControls();
 
             // Ensure columns fit the data after loading
@@ -201,10 +244,10 @@ public class UserController implements Initializable {
      */
     private void autoResizeColumns() {
         // Ensure the table uses all available width
-        userTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        movieTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Optionally force a resize for all columns
-        userTableView.getColumns().forEach(column -> {
+        movieTableView.getColumns().forEach(column -> {
             // Trick to refresh the column width calculations
             double width = column.getWidth();
             column.setPrefWidth(width);
@@ -215,7 +258,7 @@ public class UserController implements Initializable {
     private void handlePrevButton(ActionEvent event) {
         if (currentPage > 1) {
             currentPage--;
-            loadUsers();
+            loadMovies();
         }
     }
 
@@ -223,7 +266,7 @@ public class UserController implements Initializable {
     private void handleNextButton(ActionEvent event) {
         if (currentPage < totalPages) {
             currentPage++;
-            loadUsers();
+            loadMovies();
         }
     }
 
@@ -260,20 +303,20 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    private void handleAddUserButton(ActionEvent event) {
-        openUserForm(null); // Pass null for adding a new user
+    private void handleAddMovieButton(ActionEvent event) {
+        openMovieForm(null); // Pass null for adding a new movie
     }
     
-    private void handleUpdateUser(UserModel user) {
-        openUserForm(user); // Pass the user for updating
+    private void handleUpdateMovie(MovieModel movie) {
+        openMovieForm(movie); // Pass the movie for updating
     }
     
-    private void handleDeleteUser(UserModel user) {
+    private void handleDeleteMovie(MovieModel movie) {
         // Create confirmation alert
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Confirm Delete");
-        confirmDialog.setHeaderText("Delete User");
-        confirmDialog.setContentText("Are you sure you want to delete user " + user.getFirstName() + " " + user.getLastName() + "?");
+        confirmDialog.setHeaderText("Delete Movie");
+        confirmDialog.setContentText("Are you sure you want to delete movie \"" + movie.getTitle() + "\"?");
         
         // Create custom header with warning icon
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView warningIcon = 
@@ -282,7 +325,7 @@ public class UserController implements Initializable {
         warningIcon.setFill(javafx.scene.paint.Color.valueOf("#FF9800"));
         
         // Set header with icon
-        javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, warningIcon, new Label("Delete User"));
+        javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, warningIcon, new Label("Delete Movie"));
         headerBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         
         // Style the dialog
@@ -310,29 +353,29 @@ public class UserController implements Initializable {
         
         confirmDialog.showAndWait().ifPresent(response -> {
             if (response == deleteButtonType) {
-                deleteUser(user.getId());
+                deleteMovie(movie.getId());
             }
         });
     }
     
-    private void openUserForm(UserModel user) {
+    private void openMovieForm(MovieModel movie) {
         try {
-            // Load the user form FXML
-            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("UserFormView.fxml"));
+            // Load the movie form FXML
+            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("MovieFormView.fxml"));
             Parent root = loader.load();
             
-            // Get the controller and set callback to refresh user table after save
-            UserFormController controller = loader.getController();
-            controller.setRefreshCallback(this::loadUsers);
+            // Get the controller and set callback to refresh movie table after save
+            MovieFormController controller = loader.getController();
+            controller.setRefreshCallback(this::loadMovies);
             
-            // If updating, set the user to be updated
-            if (user != null) {
-                controller.setUserForUpdate(user);
+            // If updating, set the movie to be updated
+            if (movie != null) {
+                controller.setMovieForUpdate(movie);
             }
             
             // Create a new stage for the dialog
             Stage stage = new Stage();
-            stage.setTitle(user == null ? "Add User" : "Update User");
+            stage.setTitle(movie == null ? "Add Movie" : "Update Movie");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
             
@@ -340,27 +383,27 @@ public class UserController implements Initializable {
             stage.showAndWait();
             
         } catch (IOException e) {
-            showErrorAlert("Error", "Could not open the User Form", e.getMessage());
+            showErrorAlert("Error", "Could not open the Movie Form", e.getMessage());
             e.printStackTrace();
         }
     }
     
-    private void deleteUser(int userId) {
+    private void deleteMovie(int movieId) {
         try (Connection connection = SingletonConnection.getConnection()) {
-            String sql = "DELETE FROM Users WHERE id = ?";
+            String sql = "DELETE FROM Movies WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setInt(1, userId);
+                statement.setInt(1, movieId);
                 int affectedRows = statement.executeUpdate();
                 
                 if (affectedRows > 0) {
                     // Success - refresh the table
-                    loadUsers();
+                    loadMovies();
                 } else {
-                    showErrorAlert("Error", "Delete Failed", "No user was deleted. The user may not exist.");
+                    showErrorAlert("Error", "Delete Failed", "No movie was deleted. The movie may not exist.");
                 }
             }
         } catch (SQLException e) {
-            showErrorAlert("Database Error", "Could not delete the user", e.getMessage());
+            showErrorAlert("Database Error", "Could not delete the movie", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -380,7 +423,7 @@ public class UserController implements Initializable {
                 
                 updateBtn.setGraphic(editIcon);
                 updateBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 2; -fx-min-width: 24px; -fx-min-height: 24px; -fx-max-width: 24px; -fx-max-height: 24px; -fx-padding: 2px;");
-                updateBtn.setTooltip(new javafx.scene.control.Tooltip("Edit user"));
+                updateBtn.setTooltip(new javafx.scene.control.Tooltip("Edit movie"));
                 
                 // Create and style the delete button with icon only
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
@@ -390,19 +433,19 @@ public class UserController implements Initializable {
                 
                 deleteBtn.setGraphic(deleteIcon);
                 deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 2; -fx-min-width: 24px; -fx-min-height: 24px; -fx-max-width: 24px; -fx-max-height: 24px; -fx-padding: 2px;");
-                deleteBtn.setTooltip(new javafx.scene.control.Tooltip("Delete user"));
+                deleteBtn.setTooltip(new javafx.scene.control.Tooltip("Delete movie"));
                 
                 pane.setAlignment(javafx.geometry.Pos.CENTER);
                 
                 // Set button actions
                 updateBtn.setOnAction(event -> {
-                    UserModel user = getTableView().getItems().get(getIndex());
-                    handleUpdateUser(user);
+                    MovieModel movie = getTableView().getItems().get(getIndex());
+                    handleUpdateMovie(movie);
                 });
                 
                 deleteBtn.setOnAction(event -> {
-                    UserModel user = getTableView().getItems().get(getIndex());
-                    handleDeleteUser(user);
+                    MovieModel movie = getTableView().getItems().get(getIndex());
+                    handleDeleteMovie(movie);
                 });
             }
             
