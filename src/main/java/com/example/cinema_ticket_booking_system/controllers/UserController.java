@@ -59,20 +59,7 @@ public class UserController implements Initializable {
     private TableColumn<UserModel, Void> actionsColumn;
     
     @FXML
-    private Button prevButton;
-    
-    @FXML
-    private Button nextButton;
-    
-    @FXML
-    private Label pageLabel;
-    
-    @FXML
     private Button addUserButton;
-
-    private int currentPage = 1;
-    private final int pageSize = 50;
-    private int totalPages = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -91,29 +78,12 @@ public class UserController implements Initializable {
     }
     
     private void setupButtons() {
-        // Style the previous button with a left arrow icon
-        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView prevIcon = 
-            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.ARROW_LEFT);
-        prevIcon.setFill(javafx.scene.paint.Color.WHITE);
-        prevButton.setGraphic(prevIcon);
-        prevButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
-        
-        // Style the next button with a right arrow icon
-        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView nextIcon = 
-            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.ARROW_RIGHT);
-        nextIcon.setFill(javafx.scene.paint.Color.WHITE);
-        nextButton.setGraphic(nextIcon);
-        nextButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
-        
         // Style the add user button with a user plus icon
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView addIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.USER_PLUS);
         addIcon.setFill(javafx.scene.paint.Color.WHITE);
         addUserButton.setGraphic(addIcon);
         addUserButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
-        
-        // Style the page label
-        pageLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #455A64;");
     }
 
     private void setupTableColumns() {
@@ -150,24 +120,11 @@ public class UserController implements Initializable {
         ObservableList<UserModel> users = FXCollections.observableArrayList();
 
         try (Connection connection = SingletonConnection.getConnection()) {
-            // Count total users to calculate pagination
-            String countQuery = "SELECT COUNT(*) FROM Users";
-            try (PreparedStatement countStatement = connection.prepareStatement(countQuery)) {
-                ResultSet countResult = countStatement.executeQuery();
-                if (countResult.next()) {
-                    int totalUsers = countResult.getInt(1);
-                    totalPages = (int) Math.ceil((double) totalUsers / pageSize);
-                }
-            }
-
-            // Fetch users for the current page
+            // Fetch all users
             String query = "SELECT id, role, first_name, last_name, username, email, phone_number " +
-                    "FROM Users ORDER BY id LIMIT ? OFFSET ?";
+                    "FROM Users ORDER BY id";
     
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, pageSize);
-                statement.setInt(2, (currentPage - 1) * pageSize);
-    
                 ResultSet resultSet = statement.executeQuery();
     
                 while (resultSet.next()) {
@@ -183,9 +140,8 @@ public class UserController implements Initializable {
                     users.add(user);
                 }
             }
-
+    
             userTableView.setItems(users);
-            updatePaginationControls();
 
             // Ensure columns fit the data after loading
             autoResizeColumns();
@@ -211,27 +167,7 @@ public class UserController implements Initializable {
         });
     }
 
-    @FXML
-    private void handlePrevButton(ActionEvent event) {
-        if (currentPage > 1) {
-            currentPage--;
-            loadUsers();
-        }
-    }
-
-    @FXML
-    private void handleNextButton(ActionEvent event) {
-        if (currentPage < totalPages) {
-            currentPage++;
-            loadUsers();
-        }
-    }
-
-    private void updatePaginationControls() {
-        pageLabel.setText("Page " + currentPage + " of " + totalPages);
-        prevButton.setDisable(currentPage <= 1);
-        nextButton.setDisable(currentPage >= totalPages);
-    }
+    // Pagination methods removed
 
     private void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

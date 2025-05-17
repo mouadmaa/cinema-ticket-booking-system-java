@@ -50,7 +50,7 @@ public class DashboardController implements Initializable {
         
         // Load the user view by default when the dashboard is opened
         try {
-            loadUserView();
+            loadHomeView();
         } catch (IOException e) {
             e.printStackTrace();
         }

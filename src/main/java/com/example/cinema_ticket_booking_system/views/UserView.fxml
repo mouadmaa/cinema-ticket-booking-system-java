@@ -48,30 +48,6 @@
             <TableColumn fx:id="phoneNumberColumn" text="Phone"/>
             <TableColumn fx:id="actionsColumn" text="Actions"/>
          </columns>
-         <VBox.margin>
-            <Insets bottom="10.0"/>
-         </VBox.margin>
       </TableView>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="760.0" spacing="20.0">
-         <Button fx:id="prevButton" onAction="#handlePrevButton" 
-                style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 2;" 
-                styleClass="button-primary" text="Previous">
-            <graphic>
-               <FontAwesomeIconView glyphName="CHEVRON_LEFT" size="14" fill="WHITE" />
-            </graphic>
-         </Button>
-         <Label fx:id="pageLabel" styleClass="h4" text="Page 1">
-            <font>
-               <Font size="16.0"/>
-            </font>
-         </Label>
-         <Button fx:id="nextButton" onAction="#handleNextButton" 
-                style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 2;" 
-                styleClass="button-primary" text="Next">
-            <graphic>
-               <FontAwesomeIconView glyphName="CHEVRON_RIGHT" size="14" fill="WHITE" />
-            </graphic>
-         </Button>
-      </HBox>
    </VBox>
 </AnchorPane>

@@ -56,20 +56,7 @@ public class MovieController implements Initializable {
     private TableColumn<MovieModel, Void> actionsColumn;
     
     @FXML
-    private Button prevButton;
-    
-    @FXML
-    private Button nextButton;
-    
-    @FXML
-    private Label pageLabel;
-    
-    @FXML
     private Button addMovieButton;
-
-    private int currentPage = 1;
-    private final int pageSize = 50;
-    private int totalPages = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,29 +75,12 @@ public class MovieController implements Initializable {
     }
     
     private void setupButtons() {
-        // Style the previous button with a left arrow icon
-        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView prevIcon = 
-            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.ARROW_LEFT);
-        prevIcon.setFill(javafx.scene.paint.Color.WHITE);
-        prevButton.setGraphic(prevIcon);
-        prevButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
-        
-        // Style the next button with a right arrow icon
-        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView nextIcon = 
-            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.ARROW_RIGHT);
-        nextIcon.setFill(javafx.scene.paint.Color.WHITE);
-        nextButton.setGraphic(nextIcon);
-        nextButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
-        
         // Style the add movie button with a film icon
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView addIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.FILM);
         addIcon.setFill(javafx.scene.paint.Color.WHITE);
         addMovieButton.setGraphic(addIcon);
         addMovieButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
-        
-        // Style the page label
-        pageLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #455A64;");
     }
 
     private void setupTableColumns() {
@@ -193,24 +163,11 @@ public class MovieController implements Initializable {
         ObservableList<MovieModel> movies = FXCollections.observableArrayList();
 
         try (Connection connection = SingletonConnection.getConnection()) {
-            // Count total movies to calculate pagination
-            String countQuery = "SELECT COUNT(*) FROM Movies";
-            try (PreparedStatement countStatement = connection.prepareStatement(countQuery)) {
-                ResultSet countResult = countStatement.executeQuery();
-                if (countResult.next()) {
-                    int totalMovies = countResult.getInt(1);
-                    totalPages = (int) Math.ceil((double) totalMovies / pageSize);
-                }
-            }
-
-            // Fetch movies for the current page
+            // Fetch all movies
             String query = "SELECT id, title, genre, duration, release_date, description " +
-                    "FROM Movies ORDER BY id LIMIT ? OFFSET ?";
+                    "FROM Movies ORDER BY id";
     
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, pageSize);
-                statement.setInt(2, (currentPage - 1) * pageSize);
-    
                 ResultSet resultSet = statement.executeQuery();
     
                 while (resultSet.next()) {
@@ -226,9 +183,8 @@ public class MovieController implements Initializable {
                     movies.add(movie);
                 }
             }
-
+    
             movieTableView.setItems(movies);
-            updatePaginationControls();
 
             // Ensure columns fit the data after loading
             autoResizeColumns();
@@ -254,27 +210,7 @@ public class MovieController implements Initializable {
         });
     }
 
-    @FXML
-    private void handlePrevButton(ActionEvent event) {
-        if (currentPage > 1) {
-            currentPage--;
-            loadMovies();
-        }
-    }
-
-    @FXML
-    private void handleNextButton(ActionEvent event) {
-        if (currentPage < totalPages) {
-            currentPage++;
-            loadMovies();
-        }
-    }
-
-    private void updatePaginationControls() {
-        pageLabel.setText("Page " + currentPage + " of " + totalPages);
-        prevButton.setDisable(currentPage <= 1);
-        nextButton.setDisable(currentPage >= totalPages);
-    }
+    // Pagination methods removed
 
     private void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
