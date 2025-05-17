@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -54,6 +55,9 @@ public class UserController implements Initializable {
     private TableColumn<UserModel, LocalDateTime> updatedAtColumn;
     
     @FXML
+    private TableColumn<UserModel, Void> actionsColumn;
+    
+    @FXML
     private Button prevButton;
 
     @FXML
@@ -92,14 +96,18 @@ public class UserController implements Initializable {
 
         // Set column proportional widths based on content
         idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 5); // 5% width
-        roleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        firstNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
-        lastNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
-        usernameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
-        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
-        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 11); // 11% width
-        createdAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 9); // 9% width
-        updatedAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 9); // 9% width
+        roleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 9); // 9% width
+        firstNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        lastNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        usernameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 16); // 16% width
+        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        createdAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
+        updatedAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
+        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 14); // 14% width
+        
+        // Configure the actions column with update and delete buttons
+        setupActionsColumn();
 
         // Format date columns
         createdAtColumn.setCellFactory(column -> new TableCell<>() {
@@ -229,27 +237,106 @@ public class UserController implements Initializable {
 
     @FXML
     private void handleAddUserButton(ActionEvent event) {
+        openUserForm(null); // Pass null for adding a new user
+    }
+    
+    private void handleUpdateUser(UserModel user) {
+        openUserForm(user); // Pass the user for updating
+    }
+    
+    private void handleDeleteUser(UserModel user) {
+        // Confirm deletion
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmDialog.setTitle("Confirm Delete");
+        confirmDialog.setHeaderText("Delete User");
+        confirmDialog.setContentText("Are you sure you want to delete user " + user.getFirstName() + " " + user.getLastName() + "?");
+        
+        confirmDialog.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                deleteUser(user.getId());
+            }
+        });
+    }
+    
+    private void openUserForm(UserModel user) {
         try {
-            // Load the add user form FXML
-            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("AddUserForm.fxml"));
+            // Load the user form FXML
+            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("UserForm.fxml"));
             Parent root = loader.load();
-
+            
             // Get the controller and set callback to refresh user table after save
-            AddUserFormController controller = loader.getController();
+            UserFormController controller = loader.getController();
             controller.setRefreshCallback(this::loadUsers);
-
+            
+            // If updating, set the user to be updated
+            if (user != null) {
+                controller.setUserForUpdate(user);
+            }
+            
             // Create a new stage for the dialog
             Stage stage = new Stage();
-            stage.setTitle("Add New User");
+            stage.setTitle(user == null ? "Add New User" : "Update User");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-
+            
             // Show the dialog and wait for it to close
             stage.showAndWait();
-
+            
         } catch (IOException e) {
-            showErrorAlert("Error", "Could not open the add user form", e.getMessage());
+            showErrorAlert("Error", "Could not open the User Form", e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    private void deleteUser(int userId) {
+        try (Connection connection = SingletonConnection.getConnection()) {
+            String sql = "DELETE FROM Users WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, userId);
+                int affectedRows = statement.executeUpdate();
+                
+                if (affectedRows > 0) {
+                    // Success - refresh the table
+                    loadUsers();
+                } else {
+                    showErrorAlert("Error", "Delete Failed", "No user was deleted. The user may not exist.");
+                }
+            }
+        } catch (SQLException e) {
+            showErrorAlert("Database Error", "Could not delete the user", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    private void setupActionsColumn() {
+        actionsColumn.setCellFactory(param -> new TableCell<>() {
+            private final Button updateBtn = new Button("Update");
+            private final Button deleteBtn = new Button("Delete");
+            private final HBox pane = new HBox(5, updateBtn, deleteBtn);
+            
+            {
+                // Style the buttons
+                updateBtn.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;");
+                deleteBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
+                pane.setAlignment(javafx.geometry.Pos.CENTER);
+                
+                // Set button actions
+                updateBtn.setOnAction(event -> {
+                    UserModel user = getTableView().getItems().get(getIndex());
+                    handleUpdateUser(user);
+                });
+                
+                deleteBtn.setOnAction(event -> {
+                    UserModel user = getTableView().getItems().get(getIndex());
+                    handleDeleteUser(user);
+                });
+            }
+            
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : pane);
+            }
+        });
     }
 }

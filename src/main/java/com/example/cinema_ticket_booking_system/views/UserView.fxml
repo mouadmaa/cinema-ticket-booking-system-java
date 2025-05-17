@@ -43,6 +43,7 @@
             <TableColumn fx:id="phoneNumberColumn" text="Phone"/>
             <TableColumn fx:id="createdAtColumn" text="Created At"/>
             <TableColumn fx:id="updatedAtColumn" text="Updated At"/>
+            <TableColumn fx:id="actionsColumn" text="Actions"/>
          </columns>
          <VBox.margin>
             <Insets bottom="10.0"/>
