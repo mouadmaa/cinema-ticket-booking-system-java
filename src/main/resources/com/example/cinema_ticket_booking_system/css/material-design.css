@@ -1,0 +1,378 @@
+/* Material Design CSS for Cinema Ticket Booking System */
+/* Material Design CSS for Cinema Ticket Booking System */
+
+/* Global Styles */
+.root {
+    -fx-font-family: 'Roboto', 'Segoe UI', sans-serif;
+    -fx-background-color: #ECEFF1;
+}
+
+/* Label Styles */
+.label {
+    -fx-text-fill: #212121;
+}
+
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #455A64;
+}
+
+/* JFXTextField Styles */
+.jfx-text-field, .jfx-password-field {
+    -fx-prompt-text-fill: #9E9E9E;
+    -fx-text-fill: #212121;
+    -fx-font-size: 13px;
+}
+
+.jfx-text-field:focused, .jfx-password-field:focused {
+    -fx-prompt-text-fill: #1E88E5;
+}
+
+/* JFXButton Styles */
+.jfx-button {
+    -fx-background-radius: 4px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+/* Blue primary button */
+.button-primary {
+    -fx-background-color: #1E88E5;
+    -fx-text-fill: white;
+}
+
+.button-primary:hover {
+    -fx-background-color: #1976D2;
+}
+
+/* Green success button */
+.button-success {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.button-success:hover {
+    -fx-background-color: #388E3C;
+}
+
+/* Red danger button */
+.button-danger {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+}
+
+.button-danger:hover {
+    -fx-background-color: #D32F2F;
+}
+
+/* Gray neutral button */
+.button-neutral {
+    -fx-background-color: #757575;
+    -fx-text-fill: white;
+}
+
+.button-neutral:hover {
+    -fx-background-color: #616161;
+}
+
+/* Orange warning button */
+.button-warning {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+}
+
+.button-warning:hover {
+    -fx-background-color: #F57C00;
+}
+
+/* Table Styles */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 4px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #455A64;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: #E0E0E0;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #F5F5F5;
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #E3F2FD;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #BBDEFB;
+    -fx-text-fill: #212121;
+}
+
+/* JFXComboBox Styles */
+.jfx-combo-box {
+    -fx-prompt-text-fill: #9E9E9E;
+    -fx-background-color: transparent;
+}
+
+.jfx-combo-box .cell {
+    -fx-text-fill: #212121;
+    -fx-font-size: 13px;
+}
+
+/* Dialog styling */
+.jfx-dialog-layout {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+}
+
+.dialog-header {
+    -fx-background-color: #1E88E5;
+    -fx-padding: 10px;
+}
+
+.dialog-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Dashboard sidebar styling */
+.sidebar {
+    -fx-background-color: #263238;
+}
+
+.sidebar-header {
+    -fx-background-color: #1E88E5;
+    -fx-padding: 15px;
+}
+
+.sidebar-header .label {
+    -fx-text-fill: white;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #B0BEC5;
+    -fx-alignment: baseline-left;
+    -fx-padding: 10px 15px;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #37474F;
+    -fx-text-fill: white;
+}
+
+.sidebar-button.active {
+    -fx-background-color: #1E88E5;
+    -fx-text-fill: white;
+}
+
+/* Card styling */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212121;
+}
+
+.card-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #757575;
+}
+
+/* Form styling */
+.form-container {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 20px;
+}
+
+.form-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E88E5;
+}
+
+.form-error {
+    -fx-text-fill: #F44336;
+    -fx-font-size: 12px;
+}
+
+/* Header styling */
+.page-header {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212121;
+}
+/* Global Styles */
+.root {
+    -fx-font-family: 'Roboto', 'Segoe UI', sans-serif;
+    -fx-background-color: #FAFAFA;
+}
+
+/* Label Styles */
+.label {
+    -fx-text-fill: #212121;
+}
+
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #455A64;
+}
+
+/* JFXTextField Styles */
+.jfx-text-field, .jfx-password-field {
+    -fx-prompt-text-fill: #9E9E9E;
+    -fx-text-fill: #212121;
+    -fx-font-size: 13px;
+}
+
+.jfx-text-field:focused, .jfx-password-field:focused {
+    -fx-prompt-text-fill: #1E88E5;
+}
+
+/* JFXButton Styles */
+.jfx-button {
+    -fx-background-radius: 3px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.jfx-button:hover {
+    -fx-cursor: hand;
+}
+
+/* Blue primary button */
+.button-primary {
+    -fx-background-color: #1E88E5;
+}
+
+.button-primary:hover {
+    -fx-background-color: #1976D2;
+}
+
+/* Green success button */
+.button-success {
+    -fx-background-color: #4CAF50;
+}
+
+.button-success:hover {
+    -fx-background-color: #388E3C;
+}
+
+/* Red danger button */
+.button-danger {
+    -fx-background-color: #F44336;
+}
+
+.button-danger:hover {
+    -fx-background-color: #D32F2F;
+}
+
+/* Gray neutral button */
+.button-neutral {
+    -fx-background-color: #757575;
+}
+
+.button-neutral:hover {
+    -fx-background-color: #616161;
+}
+
+/* Table Styles */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 2px;
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 2px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #455A64;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: #E0E0E0;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #F5F5F5;
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #E3F2FD;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #BBDEFB;
+    -fx-text-fill: #212121;
+}
+
+/* Card container */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: #E0E0E0;
+}
+
+/* Form header */
+.form-header {
+    -fx-background-color: #1E88E5;
+    -fx-background-radius: 4px 4px 0 0;
+    -fx-padding: 10px;
+}
+
+.form-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Dialog styling */
+.jfx-dialog-layout {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+}
+
+.dialog-trigger {
+    -fx-cursor: hand;
+}

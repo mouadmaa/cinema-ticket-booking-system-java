@@ -1,0 +1,17 @@
+[2025-05-17 21:42:50] [INFO   ] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:42:50] [INFO   ] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 
+[2025-05-17 21:42:51] [INFO   ] com.example.cinema_ticket_booking_system.MainApplication: Application started successfully 
+[2025-05-17 21:44:04] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:44:04] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 
+[2025-05-17 21:44:05] [INFO] com.example.cinema_ticket_booking_system.MainApplication: Application started successfully 
+[2025-05-17 21:44:09] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:44:10] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 
+[2025-05-17 21:46:00] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:46:01] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 
+[2025-05-17 21:46:01] [INFO] com.example.cinema_ticket_booking_system.MainApplication: Application started successfully 
+[2025-05-17 21:46:09] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:46:09] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 
+[2025-05-17 21:47:19] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:47:19] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 
+[2025-05-17 21:47:20] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Initializing database connection 
+[2025-05-17 21:47:20] [INFO] com.example.cinema_ticket_booking_system.SingletonConnection: Database connection established successfully 

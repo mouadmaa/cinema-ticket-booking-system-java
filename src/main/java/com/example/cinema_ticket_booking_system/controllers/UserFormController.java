@@ -64,7 +64,7 @@ public class UserFormController implements Initializable {
         roleComboBox.setItems(FXCollections.observableArrayList("admin", "front_desk"));
         
         // Set default title for Add mode
-        formTitleLabel.setText("Add New User");
+        formTitleLabel.setText("Add User");
         
         // Clear any error messages
         errorLabel.setText("");
@@ -107,7 +107,7 @@ public class UserFormController implements Initializable {
             if (isUpdateMode) {
                 updateUser(connection);
             } else {
-                addNewUser(connection);
+                addUser(connection);
             }
         } catch (SQLException e) {
             errorLabel.setText("Database error: " + e.getMessage());
@@ -115,7 +115,7 @@ public class UserFormController implements Initializable {
         }
     }
     
-    private void addNewUser(Connection connection) throws SQLException {
+    private void addUser(Connection connection) throws SQLException {
         // SQL for inserting a new user
         String sql = "INSERT INTO Users (role, first_name, last_name, username, email, phone_number, password, created_at, updated_at) " +
                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

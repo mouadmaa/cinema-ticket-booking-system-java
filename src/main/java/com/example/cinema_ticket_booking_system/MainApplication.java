@@ -5,13 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 public class MainApplication extends Application {
+    
     @Override
     public void start(Stage stage) throws IOException {
         try {
@@ -20,9 +20,12 @@ public class MainApplication extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
             Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
     
-            // Add BootstrapFX stylesheet
-            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-
+            // Add material design CSS
+            scene.getStylesheets().add(getCssUrl("material-design.css"));
+            
+            // No need for special registration for FontAwesomeFX - it works automatically
+            // when included in the classpath and properly imported in FXML files
+            
             stage.setTitle("Cinema Ticket Booking Dashboard");
             stage.setScene(scene);
             stage.show();
@@ -48,6 +51,21 @@ public class MainApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    // Helper method to load CSS files
+    public static String getCssUrl(String cssFileName) {
+        try {
+            File cssFile = new File("src/main/resources/com/example/cinema_ticket_booking_system/css/" + cssFileName);
+            if (!cssFile.exists()) {
+                // Create directory if it doesn't exist
+                cssFile.getParentFile().mkdirs();
+            }
+            return cssFile.toURI().toURL().toExternalForm();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }

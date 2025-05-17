@@ -11,8 +11,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.Label;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -59,13 +67,13 @@ public class UserController implements Initializable {
     
     @FXML
     private Button prevButton;
-
+    
     @FXML
     private Button nextButton;
-
+    
     @FXML
     private Label pageLabel;
-
+    
     @FXML
     private Button addUserButton;
 
@@ -75,11 +83,44 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Apply style to table
+        userTableView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
+        
+        // Style pagination and control buttons with FontAwesome icons
+        setupButtons();
+        
+        // Setup table columns and load data
         setupTableColumns();
         loadUsers();
-
+    
         // Configure table to automatically resize columns to fit content
         userTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+    
+    private void setupButtons() {
+        // Style the previous button with a left arrow icon
+        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView prevIcon = 
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.ARROW_LEFT);
+        prevIcon.setFill(javafx.scene.paint.Color.WHITE);
+        prevButton.setGraphic(prevIcon);
+        prevButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
+        
+        // Style the next button with a right arrow icon
+        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView nextIcon = 
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.ARROW_RIGHT);
+        nextIcon.setFill(javafx.scene.paint.Color.WHITE);
+        nextButton.setGraphic(nextIcon);
+        nextButton.setStyle("-fx-background-color: #455A64; -fx-text-fill: white; -fx-background-radius: 2;");
+        
+        // Style the add user button with a user plus icon
+        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView addIcon = 
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.USER_PLUS);
+        addIcon.setFill(javafx.scene.paint.Color.WHITE);
+        addUserButton.setGraphic(addIcon);
+        addUserButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
+        
+        // Style the page label
+        pageLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #455A64;");
     }
 
     private void setupTableColumns() {
@@ -100,11 +141,17 @@ public class UserController implements Initializable {
         firstNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
         lastNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
         usernameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 16); // 16% width
-        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 17); // 17% width
+        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 11); // 11% width
         createdAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
         updatedAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
-        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 14); // 14% width
+        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 7); // 7% width
+        
+        // Set minimum width for actions column to ensure buttons fit
+        actionsColumn.setMinWidth(70);
+        
+        // Set alignment for actions column to center
+        actionsColumn.setStyle("-fx-alignment: CENTER;");
         
         // Configure the actions column with update and delete buttons
         setupActionsColumn();
@@ -232,6 +279,24 @@ public class UserController implements Initializable {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
+        
+        // Create custom header with icon
+        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView errorIcon = 
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.EXCLAMATION_CIRCLE);
+        errorIcon.setSize("28");
+        errorIcon.setFill(javafx.scene.paint.Color.valueOf("#F44336"));
+        
+        // Set header with icon and text
+        javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, errorIcon, new Label(header));
+        headerBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
+        // Set dialog header content
+        alert.getDialogPane().setHeader(headerBox);
+        
+        // Apply some styling
+        alert.getDialogPane().setStyle("-fx-background-color: white;");
+        alert.getDialogPane().getStyleClass().add("alert");
+        
         alert.showAndWait();
     }
 
@@ -245,14 +310,47 @@ public class UserController implements Initializable {
     }
     
     private void handleDeleteUser(UserModel user) {
-        // Confirm deletion
+        // Create confirmation alert
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Confirm Delete");
         confirmDialog.setHeaderText("Delete User");
         confirmDialog.setContentText("Are you sure you want to delete user " + user.getFirstName() + " " + user.getLastName() + "?");
         
+        // Create custom header with warning icon
+        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView warningIcon = 
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.WARNING);
+        warningIcon.setSize("28");
+        warningIcon.setFill(javafx.scene.paint.Color.valueOf("#FF9800"));
+        
+        // Set header with icon
+        javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, warningIcon, new Label("Delete User"));
+        headerBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
+        // Style the dialog
+        confirmDialog.getDialogPane().setHeader(headerBox);
+        confirmDialog.getDialogPane().setStyle("-fx-background-color: white;");
+        confirmDialog.getDialogPane().getStyleClass().add("alert");
+        
+        // Create custom buttons
+        ButtonType cancelButtonType = new ButtonType("Cancel");
+        ButtonType deleteButtonType = new ButtonType("Delete");
+        confirmDialog.getButtonTypes().setAll(cancelButtonType, deleteButtonType);
+        
+        // Custom styling for buttons
+        Button deleteButton = (Button) confirmDialog.getDialogPane().lookupButton(deleteButtonType);
+        deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+        
+        // Add a trash icon to delete button
+        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
+            new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
+        deleteIcon.setFill(javafx.scene.paint.Color.WHITE);
+        deleteButton.setGraphic(deleteIcon);
+        
+        Button cancelButton = (Button) confirmDialog.getDialogPane().lookupButton(cancelButtonType);
+        cancelButton.setStyle("-fx-background-color: #757575; -fx-text-fill: white;");
+        
         confirmDialog.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
+            if (response == deleteButtonType) {
                 deleteUser(user.getId());
             }
         });
@@ -275,7 +373,7 @@ public class UserController implements Initializable {
             
             // Create a new stage for the dialog
             Stage stage = new Stage();
-            stage.setTitle(user == null ? "Add New User" : "Update User");
+            stage.setTitle(user == null ? "Add User" : "Update User");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
             
@@ -310,14 +408,31 @@ public class UserController implements Initializable {
     
     private void setupActionsColumn() {
         actionsColumn.setCellFactory(param -> new TableCell<>() {
-            private final Button updateBtn = new Button("Update");
-            private final Button deleteBtn = new Button("Delete");
-            private final HBox pane = new HBox(5, updateBtn, deleteBtn);
+            private final Button updateBtn = new Button();
+            private final Button deleteBtn = new Button();
+            private final HBox pane = new HBox(8, updateBtn, deleteBtn);
             
             {
-                // Style the buttons
-                updateBtn.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;");
-                deleteBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
+                // Create and style the update button with icon only
+                de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView editIcon = 
+                    new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.EDIT);
+                editIcon.setSize("12");
+                editIcon.setFill(javafx.scene.paint.Color.WHITE);
+                
+                updateBtn.setGraphic(editIcon);
+                updateBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 2; -fx-min-width: 24px; -fx-min-height: 24px; -fx-max-width: 24px; -fx-max-height: 24px; -fx-padding: 2px;");
+                updateBtn.setTooltip(new javafx.scene.control.Tooltip("Edit user"));
+                
+                // Create and style the delete button with icon only
+                de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
+                    new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
+                deleteIcon.setSize("12");
+                deleteIcon.setFill(javafx.scene.paint.Color.WHITE);
+                
+                deleteBtn.setGraphic(deleteIcon);
+                deleteBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-background-radius: 2; -fx-min-width: 24px; -fx-min-height: 24px; -fx-max-width: 24px; -fx-max-height: 24px; -fx-padding: 2px;");
+                deleteBtn.setTooltip(new javafx.scene.control.Tooltip("Delete user"));
+                
                 pane.setAlignment(javafx.geometry.Pos.CENTER);
                 
                 // Set button actions

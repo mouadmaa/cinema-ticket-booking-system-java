@@ -2,73 +2,144 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
-      prefHeight="450.0" prefWidth="500.0" spacing="10.0" style="-fx-background-color: #f8f9fa;"
+      prefHeight="450.0" prefWidth="550.0" spacing="10.0" style="-fx-background-color: #FFFFFF;"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="com.example.cinema_ticket_booking_system.controllers.UserFormController">
    <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
    </padding>
-   <Label fx:id="formTitleLabel" text="Add New User" textAlignment="CENTER">
-      <font>
-         <Font size="20.0" />
-      </font>
-      <VBox.margin>
-         <Insets bottom="20.0" />
-      </VBox.margin>
-   </Label>
-   <GridPane hgap="10.0" vgap="15.0">
+   <HBox alignment="CENTER" style="-fx-background-color: #1E88E5; -fx-background-radius: 5;">
+      <padding>
+         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+      </padding>
+      <Label fx:id="formTitleLabel" text="Add User" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <FontAwesomeIconView glyphName="USER_PLUS" fill="WHITE" size="24" wrappingWidth="30.0" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </FontAwesomeIconView>
+   </HBox>
+   <GridPane hgap="15.0" vgap="20.0">
      <columnConstraints>
        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
      </columnConstraints>
      <rowConstraints>
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
      </rowConstraints>
-      <Label text="Role:" />
-      <Label text="First Name:" GridPane.rowIndex="1" />
-      <Label text="Last Name:" GridPane.rowIndex="2" />
-      <Label text="Username:" GridPane.rowIndex="3" />
-      <Label text="Email:" GridPane.rowIndex="4" />
-      <Label text="Phone Number:" GridPane.rowIndex="5" />
-      <Label text="Password:" GridPane.rowIndex="6" />
+      <padding>
+         <Insets top="10.0" />
+      </padding>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="0">
+         <FontAwesomeIconView glyphName="USER_CIRCLE" size="16" />
+         <Label text="Role:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="1">
+         <FontAwesomeIconView glyphName="USER" size="16" />
+         <Label text="First Name:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="2">
+         <FontAwesomeIconView glyphName="USER" size="16" />
+         <Label text="Last Name:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="3">
+         <FontAwesomeIconView glyphName="ID_BADGE" size="16" />
+         <Label text="Username:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="4">
+         <FontAwesomeIconView glyphName="ENVELOPE" size="16" />
+         <Label text="Email:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="5">
+         <FontAwesomeIconView glyphName="PHONE" size="16" />
+         <Label text="Phone Number:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" GridPane.rowIndex="6">
+         <FontAwesomeIconView glyphName="LOCK" size="16" />
+         <Label text="Password:" styleClass="form-label">
+            <HBox.margin>
+               <Insets left="10.0" />
+            </HBox.margin>
+         </Label>
+      </HBox>
       <ComboBox fx:id="roleComboBox" prefWidth="150.0" promptText="Select Role" GridPane.columnIndex="1" />
-      <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <TextField fx:id="firstNameField" promptText="First Name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="lastNameField" promptText="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="usernameField" promptText="Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="emailField" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextField fx:id="phoneNumberField" promptText="Phone Number" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <PasswordField fx:id="passwordField" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="6" />
    </GridPane>
-   <Label fx:id="errorLabel" textFill="RED" wrapText="true">
+   <Label fx:id="errorLabel" textFill="#f44336" wrapText="true">
       <VBox.margin>
          <Insets top="10.0" />
       </VBox.margin>
+      <graphic>
+         <FontAwesomeIconView glyphName="EXCLAMATION_TRIANGLE" fill="#f44336" size="16" />
+      </graphic>
    </Label>
    <HBox alignment="CENTER" spacing="20.0">
       <VBox.margin>
          <Insets top="20.0" />
       </VBox.margin>
-      <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" prefWidth="100.0" 
-              style="-fx-background-color: #28a745;" text="Save" textFill="WHITE" />
-      <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" prefWidth="100.0" 
-              style="-fx-background-color: #6c757d;" text="Cancel" textFill="WHITE" />
+      <Button fx:id="saveButton" onAction="#handleSave" prefWidth="120.0" 
+            style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Save">
+         <graphic>
+            <FontAwesomeIconView glyphName="SAVE" fill="WHITE" size="16" />
+         </graphic>
+      </Button>
+      <Button fx:id="cancelButton" onAction="#handleCancel" prefWidth="120.0" 
+            style="-fx-background-color: #757575; -fx-text-fill: white;" text="Cancel">
+         <graphic>
+            <FontAwesomeIconView glyphName="TIMES" fill="WHITE" size="16" />
+         </graphic>
+      </Button>
    </HBox>
 </VBox>
