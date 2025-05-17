@@ -2,8 +2,6 @@ package com.example.cinema_ticket_booking_system.models;
 
 import javafx.beans.property.*;
 
-import java.time.LocalDateTime;
-
 public class UserModel {
     private final IntegerProperty id;
     private final StringProperty role;
@@ -12,11 +10,9 @@ public class UserModel {
     private final StringProperty username;
     private final StringProperty email;
     private final StringProperty phoneNumber;
-    private final ObjectProperty<LocalDateTime> createdAt;
-    private final ObjectProperty<LocalDateTime> updatedAt;
 
     public UserModel(int id, String role, String firstName, String lastName, String username, 
-                     String email, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                     String email, String phoneNumber) {
         this.id = new SimpleIntegerProperty(id);
         this.role = new SimpleStringProperty(role);
         this.firstName = new SimpleStringProperty(firstName);
@@ -24,8 +20,6 @@ public class UserModel {
         this.username = new SimpleStringProperty(username);
         this.email = new SimpleStringProperty(email);
         this.phoneNumber = new SimpleStringProperty(phoneNumber != null ? phoneNumber : "");
-        this.createdAt = new SimpleObjectProperty<>(createdAt);
-        this.updatedAt = new SimpleObjectProperty<>(updatedAt);
     }
 
     // Property accessors
@@ -57,14 +51,6 @@ public class UserModel {
         return phoneNumber;
     }
 
-    public ObjectProperty<LocalDateTime> createdAtProperty() {
-        return createdAt;
-    }
-
-    public ObjectProperty<LocalDateTime> updatedAtProperty() {
-        return updatedAt;
-    }
-
     // Standard getters
     public int getId() {
         return id.get();
@@ -92,13 +78,5 @@ public class UserModel {
 
     public String getPhoneNumber() {
         return phoneNumber.get();
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt.get();
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt.get();
     }
 }

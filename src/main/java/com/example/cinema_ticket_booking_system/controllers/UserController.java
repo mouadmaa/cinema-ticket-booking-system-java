@@ -27,7 +27,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class UserController implements Initializable {
@@ -55,12 +54,6 @@ public class UserController implements Initializable {
     
     @FXML
     private TableColumn<UserModel, String> phoneNumberColumn;
-    
-    @FXML
-    private TableColumn<UserModel, LocalDateTime> createdAtColumn;
-    
-    @FXML
-    private TableColumn<UserModel, LocalDateTime> updatedAtColumn;
     
     @FXML
     private TableColumn<UserModel, Void> actionsColumn;
@@ -132,20 +125,16 @@ public class UserController implements Initializable {
         usernameColumn.setCellValueFactory(cellData -> cellData.getValue().usernameProperty());
         emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         phoneNumberColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
-        createdAtColumn.setCellValueFactory(cellData -> cellData.getValue().createdAtProperty());
-        updatedAtColumn.setCellValueFactory(cellData -> cellData.getValue().updatedAtProperty());
-
+        
         // Set column proportional widths based on content
         idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 5); // 5% width
-        roleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 9); // 9% width
-        firstNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        lastNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        usernameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 17); // 17% width
-        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 11); // 11% width
-        createdAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
-        updatedAtColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
-        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 7); // 7% width
+        roleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
+        firstNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
+        lastNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
+        usernameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
+        emailColumn.setMaxWidth(1f * Integer.MAX_VALUE * 22); // 22% width
+        phoneNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 16); // 16% width
+        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
         
         // Set minimum width for actions column to ensure buttons fit
         actionsColumn.setMinWidth(70);
@@ -155,31 +144,6 @@ public class UserController implements Initializable {
         
         // Configure the actions column with update and delete buttons
         setupActionsColumn();
-
-        // Format date columns
-        createdAtColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.toLocalDate().toString());
-                }
-            }
-        });
-
-        updatedAtColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.toLocalDate().toString());
-                }
-            }
-        });
     }
 
     private void loadUsers() {
@@ -197,15 +161,15 @@ public class UserController implements Initializable {
             }
 
             // Fetch users for the current page
-            String query = "SELECT id, role, first_name, last_name, username, email, phone_number, created_at, updated_at " +
+            String query = "SELECT id, role, first_name, last_name, username, email, phone_number " +
                     "FROM Users ORDER BY id LIMIT ? OFFSET ?";
-
+    
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, pageSize);
                 statement.setInt(2, (currentPage - 1) * pageSize);
-
+    
                 ResultSet resultSet = statement.executeQuery();
-
+    
                 while (resultSet.next()) {
                     int id = resultSet.getInt("id");
                     String role = resultSet.getString("role");
@@ -214,13 +178,8 @@ public class UserController implements Initializable {
                     String username = resultSet.getString("username");
                     String email = resultSet.getString("email");
                     String phoneNumber = resultSet.getString("phone_number");
-                    Timestamp createdAtTimestamp = resultSet.getTimestamp("created_at");
-                    Timestamp updatedAtTimestamp = resultSet.getTimestamp("updated_at");
-
-                    LocalDateTime createdAt = createdAtTimestamp != null ? createdAtTimestamp.toLocalDateTime() : null;
-                    LocalDateTime updatedAt = updatedAtTimestamp != null ? updatedAtTimestamp.toLocalDateTime() : null;
-
-                    UserModel user = new UserModel(id, role, firstName, lastName, username, email, phoneNumber, createdAt, updatedAt);
+    
+                    UserModel user = new UserModel(id, role, firstName, lastName, username, email, phoneNumber);
                     users.add(user);
                 }
             }

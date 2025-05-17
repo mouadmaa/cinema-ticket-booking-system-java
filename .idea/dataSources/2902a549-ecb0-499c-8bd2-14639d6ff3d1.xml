@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>796</IntrospectionStateNumber>
+      <IntrospectionStateNumber>830</IntrospectionStateNumber>
       <ServerVersion>16.9</ServerVersion>
       <StartupTime>1747511131</StartupTime>
       <TimeZones>true ACDT
@@ -801,7 +801,7 @@ true posixrules
 13255||10|C|G
 13255||-9223372036854775808|U|G
 13255||10|U|G</Grants>
-      <IntrospectionStateNumber>796</IntrospectionStateNumber>
+      <IntrospectionStateNumber>830</IntrospectionStateNumber>
       <ObjectId>16384</ObjectId>
       <OwnerName>mouadmaa</OwnerName>
     </database>
@@ -817,6 +817,7 @@ true posixrules
 13255||10|C|G
 13255||-9223372036854775808|U|G
 13255||10|U|G</Grants>
+      <IntrospectionStateNumber>812</IntrospectionStateNumber>
       <ObjectId>5</ObjectId>
       <OwnerName>mouadmaa</OwnerName>
     </database>
@@ -4235,8 +4236,8 @@ true posixrules
     <schema id="264" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>796</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2025-05-17.20:40:50</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>830</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2025-05-17.21:10:41</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -7592,352 +7593,253 @@ true posixrules
     <schema id="508" parent="3" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-05-16.20:12:34</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>812</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2025-05-17.21:09:17</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
-    <sequence id="509" parent="264" name="users_id_seq">
-      <ObjectId>32769</ObjectId>
+    <sequence id="509" parent="264" name="movies_id_seq">
+      <ObjectId>32843</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>793</StateNumber>
+      <StateNumber>827</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>mouadmaa</OwnerName>
     </sequence>
-    <table id="510" parent="264" name="users">
-      <ObjectId>32770</ObjectId>
-      <StateNumber>794</StateNumber>
-      <AccessMethodId>2</AccessMethodId>
-      <OwnerName>mouadmaa</OwnerName>
-    </table>
-    <sequence id="511" parent="508" name="users_id_seq">
-      <ObjectId>24577</ObjectId>
+    <sequence id="510" parent="264" name="users_id_seq">
+      <ObjectId>32789</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>750</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>integer|0s</StoredType>
       <OwnerName>mouadmaa</OwnerName>
     </sequence>
-    <table id="512" parent="508" name="users">
-      <ObjectId>24578</ObjectId>
-      <StateNumber>751</StateNumber>
+    <table id="511" parent="264" name="movies">
+      <ObjectId>32844</ObjectId>
+      <StateNumber>828</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mouadmaa</OwnerName>
     </table>
-    <check id="513" parent="510" name="check_email">
+    <table id="512" parent="264" name="users">
+      <ObjectId>32790</ObjectId>
+      <StateNumber>799</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>mouadmaa</OwnerName>
+    </table>
+    <check id="513" parent="511" name="movies_duration_check">
+      <ColNames>duration</ColNames>
+      <ObjectId>32849</ObjectId>
+      <Predicate>(duration &gt;= 30) AND (duration &lt;= 300)</Predicate>
+      <StateNumber>827</StateNumber>
+    </check>
+    <check id="514" parent="511" name="movies_genre_check">
+      <ColNames>genre</ColNames>
+      <ObjectId>32848</ObjectId>
+      <Predicate>(genre)::text = ANY ((ARRAY[&apos;Action&apos;::character varying, &apos;Comedy&apos;::character varying, &apos;Drama&apos;::character varying, &apos;Sci-Fi&apos;::character varying, &apos;Horror&apos;::character varying, &apos;Romance&apos;::character varying, &apos;Thriller&apos;::character varying])::text[])</Predicate>
+      <StateNumber>827</StateNumber>
+    </check>
+    <check id="515" parent="511" name="check_title">
+      <ColNames>title</ColNames>
+      <ObjectId>32854</ObjectId>
+      <Predicate>(title)::text ~ &apos;^[A-Za-z0-9\s\-:&apos;&apos;]*$&apos;::text</Predicate>
+      <StateNumber>828</StateNumber>
+    </check>
+    <column id="516" parent="511" name="id">
+      <DefaultExpression>nextval(&apos;movies_id_seq&apos;::regclass)</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>827</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <SequenceId>32843</SequenceId>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="517" parent="511" name="title">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>827</StateNumber>
+      <StoredType>varchar(100)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="518" parent="511" name="genre">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>827</StateNumber>
+      <StoredType>varchar(50)|0s</StoredType>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="519" parent="511" name="duration">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>827</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="520" parent="511" name="release_date">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>827</StateNumber>
+      <StoredType>date|0s</StoredType>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="521" parent="511" name="description">
+      <Position>6</Position>
+      <StateNumber>827</StateNumber>
+      <StoredType>text|0s</StoredType>
+      <TypeId>25</TypeId>
+    </column>
+    <index id="522" parent="511" name="movies_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>32852</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>827</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="523" parent="511" name="movies_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>32853</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>827</StateNumber>
+      <UnderlyingIndexId>32852</UnderlyingIndexId>
+    </key>
+    <check id="524" parent="512" name="check_email">
       <ColNames>email</ColNames>
-      <ObjectId>32786</ObjectId>
+      <ObjectId>32804</ObjectId>
       <Predicate>(email)::text ~ &apos;^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$&apos;::text</Predicate>
-      <StateNumber>794</StateNumber>
+      <StateNumber>799</StateNumber>
     </check>
-    <check id="514" parent="510" name="check_password">
+    <check id="525" parent="512" name="check_password">
       <ColNames>password</ColNames>
-      <ObjectId>32787</ObjectId>
+      <ObjectId>32805</ObjectId>
       <Predicate>(password)::text ~ &apos;^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$&apos;::text</Predicate>
-      <StateNumber>794</StateNumber>
+      <StateNumber>799</StateNumber>
     </check>
-    <check id="515" parent="510" name="check_phone_number">
+    <check id="526" parent="512" name="check_phone_number">
       <ColNames>phone_number</ColNames>
-      <ObjectId>32788</ObjectId>
+      <ObjectId>32806</ObjectId>
       <Predicate>(phone_number)::text ~ &apos;^\+?[0-9]*$&apos;::text</Predicate>
-      <StateNumber>794</StateNumber>
+      <StateNumber>799</StateNumber>
     </check>
-    <check id="516" parent="510" name="users_role_check">
+    <check id="527" parent="512" name="users_role_check">
       <ColNames>role</ColNames>
-      <ObjectId>32776</ObjectId>
+      <ObjectId>32794</ObjectId>
       <Predicate>(role)::text = ANY ((ARRAY[&apos;admin&apos;::character varying, &apos;front_desk&apos;::character varying])::text[])</Predicate>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
     </check>
-    <check id="517" parent="510" name="check_username">
+    <check id="528" parent="512" name="check_username">
       <ColNames>username</ColNames>
-      <ObjectId>32785</ObjectId>
+      <ObjectId>32803</ObjectId>
       <Predicate>(username)::text ~ &apos;^[a-zA-Z0-9_]+$&apos;::text</Predicate>
-      <StateNumber>794</StateNumber>
+      <StateNumber>799</StateNumber>
     </check>
-    <column id="518" parent="510" name="id">
+    <column id="529" parent="512" name="id">
       <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>integer|0s</StoredType>
-      <SequenceId>32769</SequenceId>
+      <SequenceId>32789</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="519" parent="510" name="role">
+    <column id="530" parent="512" name="role">
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(50)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="520" parent="510" name="first_name">
+    <column id="531" parent="512" name="first_name">
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(50)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="521" parent="510" name="last_name">
+    <column id="532" parent="512" name="last_name">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(50)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="522" parent="510" name="username">
+    <column id="533" parent="512" name="username">
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(50)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="523" parent="510" name="email">
+    <column id="534" parent="512" name="email">
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(100)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="524" parent="510" name="password">
+    <column id="535" parent="512" name="password">
       <NotNull>1</NotNull>
       <Position>7</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(255)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="525" parent="510" name="phone_number">
+    <column id="536" parent="512" name="phone_number">
       <Position>8</Position>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <StoredType>varchar(15)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="526" parent="510" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>9</Position>
-      <StateNumber>793</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="527" parent="510" name="updated_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>10</Position>
-      <StateNumber>793</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <index id="528" parent="510" name="users_pkey">
+    <index id="537" parent="512" name="users_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>32779</ObjectId>
+      <ObjectId>32797</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>793</StateNumber>
+      <StateNumber>798</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="529" parent="510" name="users_username_key">
+    <index id="538" parent="512" name="users_username_key">
       <ColNames>username</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>32781</ObjectId>
-      <StateNumber>793</StateNumber>
+      <ObjectId>32799</ObjectId>
+      <StateNumber>798</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <index id="530" parent="510" name="users_email_key">
+    <index id="539" parent="512" name="users_email_key">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>32783</ObjectId>
-      <StateNumber>793</StateNumber>
+      <ObjectId>32801</ObjectId>
+      <StateNumber>798</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="531" parent="510" name="users_pkey">
+    <key id="540" parent="512" name="users_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>32780</ObjectId>
+      <ObjectId>32798</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>793</StateNumber>
-      <UnderlyingIndexId>32779</UnderlyingIndexId>
+      <StateNumber>798</StateNumber>
+      <UnderlyingIndexId>32797</UnderlyingIndexId>
     </key>
-    <key id="532" parent="510" name="users_username_key">
+    <key id="541" parent="512" name="users_username_key">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>32782</ObjectId>
-      <StateNumber>793</StateNumber>
-      <UnderlyingIndexId>32781</UnderlyingIndexId>
+      <ObjectId>32800</ObjectId>
+      <StateNumber>798</StateNumber>
+      <UnderlyingIndexId>32799</UnderlyingIndexId>
     </key>
-    <key id="533" parent="510" name="users_email_key">
+    <key id="542" parent="512" name="users_email_key">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>32784</ObjectId>
-      <StateNumber>793</StateNumber>
-      <UnderlyingIndexId>32783</UnderlyingIndexId>
-    </key>
-    <check id="534" parent="512" name="check_email">
-      <ColNames>email</ColNames>
-      <ObjectId>24596</ObjectId>
-      <Predicate>(email)::text ~ &apos;^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$&apos;::text</Predicate>
-      <StateNumber>751</StateNumber>
-    </check>
-    <check id="535" parent="512" name="check_first_name">
-      <ColNames>first_name</ColNames>
-      <ObjectId>24593</ObjectId>
-      <Predicate>(first_name)::text ~ &apos;^[A-Za-z]+$&apos;::text</Predicate>
-      <StateNumber>751</StateNumber>
-    </check>
-    <check id="536" parent="512" name="check_last_name">
-      <ColNames>last_name</ColNames>
-      <ObjectId>24594</ObjectId>
-      <Predicate>(last_name)::text ~ &apos;^[A-Za-z]+$&apos;::text</Predicate>
-      <StateNumber>751</StateNumber>
-    </check>
-    <check id="537" parent="512" name="check_password">
-      <ColNames>password</ColNames>
-      <ObjectId>24597</ObjectId>
-      <Predicate>(password)::text ~ &apos;^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$&apos;::text</Predicate>
-      <StateNumber>751</StateNumber>
-    </check>
-    <check id="538" parent="512" name="check_phone_number">
-      <ColNames>phone_number</ColNames>
-      <ObjectId>24598</ObjectId>
-      <Predicate>(phone_number)::text ~ &apos;^\+?[0-9]*$&apos;::text</Predicate>
-      <StateNumber>751</StateNumber>
-    </check>
-    <check id="539" parent="512" name="users_role_check">
-      <ColNames>role</ColNames>
-      <ObjectId>24584</ObjectId>
-      <Predicate>(role)::text = ANY ((ARRAY[&apos;user&apos;::character varying, &apos;front_desk&apos;::character varying])::text[])</Predicate>
-      <StateNumber>750</StateNumber>
-    </check>
-    <check id="540" parent="512" name="check_username">
-      <ColNames>username</ColNames>
-      <ObjectId>24595</ObjectId>
-      <Predicate>(username)::text ~ &apos;^[a-zA-Z0-9_]+$&apos;::text</Predicate>
-      <StateNumber>751</StateNumber>
-    </check>
-    <column id="541" parent="512" name="id">
-      <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <SequenceId>24577</SequenceId>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="542" parent="512" name="role">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(50)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="543" parent="512" name="first_name">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(50)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="544" parent="512" name="last_name">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(50)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="545" parent="512" name="username">
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(50)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="546" parent="512" name="email">
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(100)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="547" parent="512" name="password">
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(255)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="548" parent="512" name="phone_number">
-      <Position>8</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>varchar(15)|0s</StoredType>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="549" parent="512" name="created_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>9</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <column id="550" parent="512" name="updated_at">
-      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
-      <Position>10</Position>
-      <StateNumber>750</StateNumber>
-      <StoredType>timestamp|0s</StoredType>
-      <TypeId>1114</TypeId>
-    </column>
-    <index id="551" parent="512" name="users_pkey">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24587</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>750</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <index id="552" parent="512" name="users_username_key">
-      <ColNames>username</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24589</ObjectId>
-      <StateNumber>750</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <index id="553" parent="512" name="users_email_key">
-      <ColNames>email</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24591</ObjectId>
-      <StateNumber>750</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <key id="554" parent="512" name="users_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24588</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>750</StateNumber>
-      <UnderlyingIndexId>24587</UnderlyingIndexId>
-    </key>
-    <key id="555" parent="512" name="users_username_key">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24590</ObjectId>
-      <StateNumber>750</StateNumber>
-      <UnderlyingIndexId>24589</UnderlyingIndexId>
-    </key>
-    <key id="556" parent="512" name="users_email_key">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>24592</ObjectId>
-      <StateNumber>750</StateNumber>
-      <UnderlyingIndexId>24591</UnderlyingIndexId>
+      <ObjectId>32802</ObjectId>
+      <StateNumber>798</StateNumber>
+      <UnderlyingIndexId>32801</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>
