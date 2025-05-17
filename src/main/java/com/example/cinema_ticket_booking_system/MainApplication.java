@@ -15,19 +15,22 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            // Load FXML from the Java directory instead of resources
+            // Load Login View instead of Dashboard
+//            URL fxmlUrl = getFxmlUrl("AuthView.fxml");
             URL fxmlUrl = getFxmlUrl("DashboardView.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
+//            Scene scene = new Scene(fxmlLoader.load(), 800, 500);
             Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
-    
+
             // Add material design CSS
             scene.getStylesheets().add(getCssUrl("material-design.css"));
             
             // No need for special registration for FontAwesomeFX - it works automatically
             // when included in the classpath and properly imported in FXML files
             
-            stage.setTitle("Cinema Ticket Booking Dashboard");
+            stage.setTitle("Cinema Ticket Booking System - Login");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

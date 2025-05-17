@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.paint.Paint;
 import com.example.cinema_ticket_booking_system.MainApplication;
+import com.example.cinema_ticket_booking_system.models.UserModel;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -32,6 +33,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private AnchorPane contentPane;
+
+    // Store the current authenticated user
+    private UserModel currentUser;
 
     // Active button style
     private final String ACTIVE_BUTTON_STYLE = "-fx-background-color: #1E88E5; -fx-text-fill: white;";
@@ -150,5 +154,9 @@ public class DashboardController implements Initializable {
         AnchorPane.setRightAnchor(view, 0.0);
         AnchorPane.setBottomAnchor(view, 0.0);
         AnchorPane.setLeftAnchor(view, 0.0);
+    }
+
+    public void setCurrentUser(UserModel user) {
+        this.currentUser = user;
     }
 }

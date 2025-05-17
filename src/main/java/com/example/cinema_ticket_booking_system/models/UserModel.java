@@ -10,9 +10,10 @@ public class UserModel {
     private final StringProperty username;
     private final StringProperty email;
     private final StringProperty phoneNumber;
+    private final StringProperty password;
 
     public UserModel(int id, String role, String firstName, String lastName, String username, 
-                     String email, String phoneNumber) {
+                     String email, String phoneNumber, String password) {
         this.id = new SimpleIntegerProperty(id);
         this.role = new SimpleStringProperty(role);
         this.firstName = new SimpleStringProperty(firstName);
@@ -20,6 +21,7 @@ public class UserModel {
         this.username = new SimpleStringProperty(username);
         this.email = new SimpleStringProperty(email);
         this.phoneNumber = new SimpleStringProperty(phoneNumber != null ? phoneNumber : "");
+        this.password = new SimpleStringProperty(password);
     }
 
     // Property accessors
@@ -51,32 +53,40 @@ public class UserModel {
         return phoneNumber;
     }
 
+    public StringProperty passwordProperty() {
+        return password;
+    }
+    
     // Standard getters
     public int getId() {
         return id.get();
     }
-
+    
     public String getRole() {
         return role.get();
     }
-
+    
     public String getFirstName() {
         return firstName.get();
     }
-
+    
     public String getLastName() {
         return lastName.get();
     }
-
+    
     public String getUsername() {
         return username.get();
     }
-
+    
     public String getEmail() {
         return email.get();
     }
-
+    
     public String getPhoneNumber() {
         return phoneNumber.get();
+    }
+    
+    public String getPassword() {
+        return password.get();
     }
 }

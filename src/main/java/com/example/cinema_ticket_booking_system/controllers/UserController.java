@@ -136,7 +136,9 @@ public class UserController implements Initializable {
                     String email = resultSet.getString("email");
                     String phoneNumber = resultSet.getString("phone_number");
     
-                    UserModel user = new UserModel(id, role, firstName, lastName, username, email, phoneNumber);
+                    // For security reasons, we don't display the actual password
+                    // Pass null or an empty string for the password parameter when displaying users
+                    UserModel user = new UserModel(id, role, firstName, lastName, username, email, phoneNumber, "");
                     users.add(user);
                 }
             }
