@@ -1,4 +1,4 @@
-package com.example.cinema_ticket_booking_system.models;
+package com.example.cinema_ticket_booking_system;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -29,7 +29,7 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Load the home view by default when the dashboard is opened
         try {
-            loadHomeView();
+            loadUserView();
         } catch (IOException e) {
             e.printStackTrace();
         }

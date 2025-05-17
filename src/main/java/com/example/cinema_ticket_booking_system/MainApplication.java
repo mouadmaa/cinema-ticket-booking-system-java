@@ -16,7 +16,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         try {
             // Load FXML from the Java directory instead of resources
-            URL fxmlUrl = getFxmlUrl("Dashboard.fxml");
+            URL fxmlUrl = getFxmlUrl("DashboardView.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(fxmlUrl);
             Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
     

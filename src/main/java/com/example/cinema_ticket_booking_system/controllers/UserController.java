@@ -1,7 +1,7 @@
 package com.example.cinema_ticket_booking_system.controllers;
 
 import com.example.cinema_ticket_booking_system.MainApplication;
-import com.example.cinema_ticket_booking_system.models.SingletonConnection;
+import com.example.cinema_ticket_booking_system.SingletonConnection;
 import com.example.cinema_ticket_booking_system.models.UserModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -261,7 +261,7 @@ public class UserController implements Initializable {
     private void openUserForm(UserModel user) {
         try {
             // Load the user form FXML
-            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("UserForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("UserFormView.fxml"));
             Parent root = loader.load();
             
             // Get the controller and set callback to refresh user table after save

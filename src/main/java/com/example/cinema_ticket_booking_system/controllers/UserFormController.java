@@ -1,6 +1,6 @@
 package com.example.cinema_ticket_booking_system.controllers;
 
-import com.example.cinema_ticket_booking_system.models.SingletonConnection;
+import com.example.cinema_ticket_booking_system.SingletonConnection;
 import com.example.cinema_ticket_booking_system.models.UserModel;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -61,7 +61,7 @@ public class UserFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set up the role combo box
-        roleComboBox.setItems(FXCollections.observableArrayList("admin", "staff", "customer"));
+        roleComboBox.setItems(FXCollections.observableArrayList("admin", "front_desk"));
         
         // Set default title for Add mode
         formTitleLabel.setText("Add New User");
