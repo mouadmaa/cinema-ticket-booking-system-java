@@ -4,10 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
-import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.paint.Paint;
 import com.example.cinema_ticket_booking_system.MainApplication;
 import com.example.cinema_ticket_booking_system.models.UserModel;
@@ -15,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import com.jfoenix.controls.JFXButton;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,13 +23,16 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable {
 
     @FXML
-    private Button homeButton;
+    private JFXButton homeButton;
     
     @FXML
-    private Button userButton;
+    private JFXButton userButton;
 
     @FXML
-    private Button movieButton;
+    private JFXButton movieButton;
+    
+    @FXML
+    private JFXButton hallButton;
 
     @FXML
     private AnchorPane contentPane;
@@ -64,6 +67,11 @@ public class DashboardController implements Initializable {
     private void handleMovieButton() throws IOException {
         loadMovieView();
     }
+    
+    @FXML
+    private void handleHallButton() throws IOException {
+        loadHallView();
+    }
 
     private void setupButtonIcons() {
         // Create a home icon
@@ -86,13 +94,19 @@ public class DashboardController implements Initializable {
         movieIcon.setFill(Color.WHITE);
         movieButton.setGraphic(movieIcon);
         movieButton.setGraphicTextGap(10);
-        movieButton.setGraphicTextGap(10);
+        
+        // Create a hall icon for the hall management button
+        FontAwesomeIconView hallIcon = new FontAwesomeIconView(FontAwesomeIcon.BUILDING);
+        hallIcon.setSize("18");
+        hallIcon.setFill(Color.WHITE);
+        hallButton.setGraphic(hallIcon);
+        hallButton.setGraphicTextGap(10);
         
         // Apply styling to buttons
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
         movieButton.getStyleClass().add("dashboard-button");
-        movieButton.getStyleClass().add("dashboard-button");
+        hallButton.getStyleClass().add("dashboard-button");
     }
 
     @FXML
@@ -110,7 +124,7 @@ public class DashboardController implements Initializable {
         homeButton.setStyle(ACTIVE_BUTTON_STYLE);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("HomeView.fxml"));
         AnchorPane homeView = fxmlLoader.load();
-        setContentPane(homeView);
+        setContent(homeView);
     }
     
     private void loadUserView() throws IOException {
@@ -118,15 +132,23 @@ public class DashboardController implements Initializable {
         userButton.setStyle(ACTIVE_BUTTON_STYLE);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("UserView.fxml"));
         AnchorPane userView = fxmlLoader.load();
-        setContentPane(userView);
+        setContent(userView);
     }
     
     private void loadMovieView() throws IOException {
         resetButtonStyles();
         movieButton.setStyle(ACTIVE_BUTTON_STYLE);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("MovieView.fxml"));
-        AnchorPane movieView = fxmlLoader.load();
-        setContentPane(movieView);
+        BorderPane movieView = fxmlLoader.load();
+        setContent(movieView);
+    }
+    
+    private void loadHallView() throws IOException {
+        resetButtonStyles();
+        hallButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("HallsView.fxml"));
+        BorderPane hallView = fxmlLoader.load();
+        setContent(hallView);
     }
     
     private void resetButtonStyles() {
@@ -135,10 +157,31 @@ public class DashboardController implements Initializable {
         homeButton.setStyle(DEFAULT_BUTTON_STYLE);
         userButton.setStyle(DEFAULT_BUTTON_STYLE);
         movieButton.setStyle(DEFAULT_BUTTON_STYLE);
-        movieButton.setStyle(DEFAULT_BUTTON_STYLE);
+        hallButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
 
     private void setContentPane(AnchorPane view) {
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(view);
+        
+        // Apply drop shadow effect to the loaded view
+        DropShadow shadow = new DropShadow();
+        shadow.setOffsetY(2.0);
+        shadow.setOffsetX(0.0);
+        shadow.setColor(javafx.scene.paint.Color.color(0, 0, 0, 0.2));
+        view.setEffect(shadow);
+        
+        // Make the loaded view fill the entire contentPane
+        AnchorPane.setTopAnchor(view, 0.0);
+        AnchorPane.setRightAnchor(view, 0.0);
+        AnchorPane.setBottomAnchor(view, 0.0);
+        AnchorPane.setLeftAnchor(view, 0.0);
+    }
+    
+    /**
+     * Generic method to set content in the contentPane that works with any layout type
+     */
+    private void setContent(javafx.scene.Parent view) {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(view);
         

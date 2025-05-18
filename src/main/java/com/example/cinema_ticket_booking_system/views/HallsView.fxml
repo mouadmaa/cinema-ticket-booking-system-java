@@ -11,12 +11,12 @@
 <?import javafx.scene.text.Font?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cinema_ticket_booking_system.controllers.MovieController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cinema_ticket_booking_system.controllers.HallController">
    <top>
       <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #1976D2; -fx-padding: 10px;" BorderPane.alignment="CENTER">
          <children>
-            <FontAwesomeIconView glyphName="FILM" size="36" fill="WHITE" />
-            <Label text="Movies Management" textFill="WHITE">
+            <FontAwesomeIconView glyphName="BUILDING" size="36" fill="WHITE" />
+            <Label text="Halls Management" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -29,30 +29,22 @@
          <children>
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                <children>
-                  <Button fx:id="addMovieButton" mnemonicParsing="false" onAction="#handleAddMovieButton" 
-                         style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;" 
-                         text="Add New Movie">
+                  <Button fx:id="addHallButton" mnemonicParsing="false" onAction="#handleAddHallButton" text="Add Hall">
                      <font>
                         <Font size="14.0" />
                      </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="FILM" size="16" fill="WHITE" />
-                     </graphic>
                   </Button>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </HBox>
-            <TableView fx:id="movieTableView" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" VBox.vgrow="ALWAYS">
+            <TableView fx:id="hallTableView" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="idColumn" prefWidth="50.0" text="ID" />
-                <TableColumn fx:id="titleColumn" prefWidth="150.0" text="Title" />
-                <TableColumn fx:id="genreColumn" prefWidth="100.0" text="Genre" />
-                <TableColumn fx:id="durationColumn" prefWidth="100.0" text="Duration" />
-                <TableColumn fx:id="releaseDateColumn" prefWidth="120.0" text="Release Date" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="200.0" text="Description" />
-                <TableColumn fx:id="actionsColumn" prefWidth="80.0" text="Actions" />
+                <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="nameColumn" prefWidth="250.0" text="Hall Name" />
+                <TableColumn fx:id="capacityColumn" prefWidth="150.0" text="Capacity" />
+                <TableColumn fx:id="actionsColumn" prefWidth="100.0" text="Actions" />
               </columns>
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
