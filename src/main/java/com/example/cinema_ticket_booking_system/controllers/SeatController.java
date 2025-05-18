@@ -98,38 +98,44 @@ public class SeatController implements Initializable {
         availabilityColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
         actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
         
-        // Format availability column to display checkmarks
-        availabilityColumn.setCellFactory(column -> new TableCell<>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    setText(null);
-                    de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView icon;
-                    if (item) {
-                        icon = new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(
-                            de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.CHECK_CIRCLE);
-                        icon.setFill(javafx.scene.paint.Color.valueOf("#4CAF50"));
+            // Set minimum width for actions column to ensure buttons fit
+            actionsColumn.setMinWidth(80);
+            
+            // Format availability column to display checkmarks
+            availabilityColumn.setCellFactory(column -> new TableCell<>() {
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
                     } else {
-                        icon = new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(
-                            de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TIMES_CIRCLE);
-                        icon.setFill(javafx.scene.paint.Color.valueOf("#F44336"));
+                        setText(null);
+                        de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView icon;
+                        if (item) {
+                            icon = new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(
+                                de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.CHECK_CIRCLE);
+                            icon.setFill(javafx.scene.paint.Color.valueOf("#4CAF50"));
+                        } else {
+                            icon = new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(
+                                de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TIMES_CIRCLE);
+                            icon.setFill(javafx.scene.paint.Color.valueOf("#F44336"));
+                        }
+                        icon.setSize("16");
+                        setGraphic(icon);
+                        setAlignment(javafx.geometry.Pos.CENTER);
                     }
-                    icon.setSize("16");
-                    setGraphic(icon);
-                    setAlignment(javafx.geometry.Pos.CENTER);
                 }
-            }
-        });
-        
-        // Configure actions column with edit and delete buttons
-        setupActionsColumn();
-        
-        // Set alignment for availability column to center
-        availabilityColumn.setStyle("-fx-alignment: CENTER;");
+            });
+            
+            // Configure actions column with edit and delete buttons
+            setupActionsColumn();
+            
+            // Set alignment for availability column to center
+            availabilityColumn.setStyle("-fx-alignment: CENTER;");
+            
+            // Ensure table uses all available width
+            seatTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
     private void loadHalls() {
