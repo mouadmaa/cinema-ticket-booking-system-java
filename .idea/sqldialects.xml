@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/database/queries/halls.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/database/queries/movies.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/database/queries/seats.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/database/queries/users.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Bookings.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Clients.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Halls.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Movies.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Payments.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Seats.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Shows.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Tickets.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/database/queries/Users.sql" dialect="PostgreSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>

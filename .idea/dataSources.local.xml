@@ -14,10 +14,14 @@
             <node kind="database" qname="@">
               <node kind="schema" qname="@" />
             </node>
-            <node kind="database" qname="cinema_db">
-              <node kind="schema" qname="public" />
+            <node kind="database">
+              <name qname="cinema_db" />
+              <name qname="postgres" />
+              <node kind="schema">
+                <name qname="@" />
+                <name qname="public" />
+              </node>
             </node>
-            <node kind="database" qname="postgres" />
           </node>
         </introspection-scope>
       </schema-mapping>
