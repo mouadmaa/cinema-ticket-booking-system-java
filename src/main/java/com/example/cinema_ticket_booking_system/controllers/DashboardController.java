@@ -33,6 +33,9 @@ public class DashboardController implements Initializable {
     
     @FXML
     private JFXButton hallButton;
+    
+    @FXML
+    private JFXButton seatButton;
 
     @FXML
     private AnchorPane contentPane;
@@ -72,6 +75,11 @@ public class DashboardController implements Initializable {
     private void handleHallButton() throws IOException {
         loadHallView();
     }
+    
+    @FXML
+    private void handleSeatButton() throws IOException {
+        loadSeatView();
+    }
 
     private void setupButtonIcons() {
         // Create a home icon
@@ -102,11 +110,19 @@ public class DashboardController implements Initializable {
         hallButton.setGraphic(hallIcon);
         hallButton.setGraphicTextGap(10);
         
+        // Create a seat icon for the seat management button
+        FontAwesomeIconView seatIcon = new FontAwesomeIconView(FontAwesomeIcon.TICKET);
+        seatIcon.setSize("18");
+        seatIcon.setFill(Color.WHITE);
+        seatButton.setGraphic(seatIcon);
+        seatButton.setGraphicTextGap(10);
+        
         // Apply styling to buttons
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
         movieButton.getStyleClass().add("dashboard-button");
         hallButton.getStyleClass().add("dashboard-button");
+        seatButton.getStyleClass().add("dashboard-button");
     }
 
     @FXML
@@ -146,9 +162,17 @@ public class DashboardController implements Initializable {
     private void loadHallView() throws IOException {
         resetButtonStyles();
         hallButton.setStyle(ACTIVE_BUTTON_STYLE);
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("HallsView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("HallView.fxml"));
         BorderPane hallView = fxmlLoader.load();
         setContent(hallView);
+    }
+    
+    private void loadSeatView() throws IOException {
+        resetButtonStyles();
+        seatButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("SeatView.fxml"));
+        BorderPane seatView = fxmlLoader.load();
+        setContent(seatView);
     }
     
     private void resetButtonStyles() {
@@ -158,6 +182,7 @@ public class DashboardController implements Initializable {
         userButton.setStyle(DEFAULT_BUTTON_STYLE);
         movieButton.setStyle(DEFAULT_BUTTON_STYLE);
         hallButton.setStyle(DEFAULT_BUTTON_STYLE);
+        seatButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
 
     private void setContentPane(AnchorPane view) {

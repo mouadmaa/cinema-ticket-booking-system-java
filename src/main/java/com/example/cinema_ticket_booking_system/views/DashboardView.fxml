@@ -64,7 +64,7 @@
                         <Insets left="20.0" />
                     </padding>
                 </JFXButton>
-                <JFXButton fx:id="movieButton" alignment="BASELINE_LEFT" buttonType="RAISED" 
+                                    <JFXButton fx:id="movieButton" alignment="BASELINE_LEFT" buttonType="RAISED" 
                           graphicTextGap="10.0" onAction="#handleMovieButton" prefHeight="50.0" 
                           prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;" 
                           text="Movies">
@@ -77,13 +77,27 @@
                     <padding>
                         <Insets left="20.0" />
                     </padding>
-                </JFXButton>
-                <JFXButton fx:id="hallButton" alignment="BASELINE_LEFT" buttonType="RAISED" 
+                                    </JFXButton>
+                                    <JFXButton fx:id="hallButton" alignment="BASELINE_LEFT" buttonType="RAISED" 
                           graphicTextGap="10.0" onAction="#handleHallButton" prefHeight="50.0" 
                           prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;" 
                           text="Halls">
                     <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="BUILDING" size="16" />
+                    </graphic>
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                                    </JFXButton>
+                                    <JFXButton fx:id="seatButton" alignment="BASELINE_LEFT" buttonType="RAISED" 
+                          graphicTextGap="10.0" onAction="#handleSeatButton" prefHeight="50.0" 
+                          prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;" 
+                          text="Seats">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="TICKET" size="16" />
                     </graphic>
                     <font>
                         <Font name="System Bold" size="14.0" />

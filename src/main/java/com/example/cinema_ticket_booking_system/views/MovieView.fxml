@@ -31,7 +31,7 @@
                <children>
                   <Button fx:id="addMovieButton" mnemonicParsing="false" onAction="#handleAddMovieButton" 
                          style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;" 
-                         text="Add New Movie">
+                         text="Add Movie">
                      <font>
                         <Font size="14.0" />
                      </font>
