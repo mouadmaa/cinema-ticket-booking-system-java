@@ -298,6 +298,7 @@ public class ShowController implements Initializable {
             stage.setTitle(show == null ? "Add Show" : "Update Show");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
+            stage.setResizable(true);
             
             // Show the dialog and wait for it to close
             stage.showAndWait();

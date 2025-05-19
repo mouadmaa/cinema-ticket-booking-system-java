@@ -4,8 +4,6 @@ import com.example.cinema_ticket_booking_system.SingletonConnection;
 import com.example.cinema_ticket_booking_system.models.HallModel;
 import com.example.cinema_ticket_booking_system.models.MovieModel;
 import com.example.cinema_ticket_booking_system.models.ShowModel;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,16 +26,13 @@ public class ShowFormController implements Initializable {
     private ComboBox<HallModel> hallComboBox;
     
     @FXML
-    private DatePicker datePicker;
+    private DatePicker showDatePicker; // Updated to match FXML
     
     @FXML
-    private ComboBox<String> hourComboBox;
+    private TextField showTimeField; // Single text field for time instead of combo boxes
     
     @FXML
-    private ComboBox<String> minuteComboBox;
-    
-    @FXML
-    private TextField priceField;
+    private TextField ticketPriceField; // Updated to match FXML
     
     @FXML
     private Spinner<Integer> availabilitySpinner;
@@ -56,9 +51,6 @@ public class ShowFormController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure time selection comboboxes
-        setupTimeComboBoxes();
-        
         // Configure availability spinner
         SpinnerValueFactory<Integer> valueFactory = 
             new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 100);
@@ -69,29 +61,29 @@ public class ShowFormController implements Initializable {
         loadHalls();
         
         // Set default date to today
-        datePicker.setValue(LocalDate.now());
+        showDatePicker.setValue(LocalDate.now());
         
-        // Add validation for price field (only allow numbers and decimal point)
-        priceField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                priceField.setText(oldValue);
+        // Set default time to 18:00 (6:00 PM)
+        showTimeField.setText("18:00");
+        
+        // Add validation for time field (format: HH:MM)
+        showTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+                // Only show error if it's not empty (allow user to clear and type)
+                if (!newValue.isEmpty()) {
+                    errorLabel.setText("Invalid time format. Use HH:MM (24-hour)");
+                }
+            } else {
+                errorLabel.setText("");
             }
         });
-    }
-    
-    private void setupTimeComboBoxes() {
-        // Setup hours (00-23)
-        ObservableList<String> hours = FXCollections.observableArrayList();
-        for (int i = 0; i < 24; i++) {
-            hours.add(String.format("%02d", i));
-        }
-        hourComboBox.setItems(hours);
-        hourComboBox.setValue("18"); // Default to 6 PM
         
-        // Setup minutes (00, 15, 30, 45)
-        ObservableList<String> minutes = FXCollections.observableArrayList("00", "15", "30", "45");
-        minuteComboBox.setItems(minutes);
-        minuteComboBox.setValue("00"); // Default to xx:00
+        // Add validation for price field (only allow numbers and decimal point)
+        ticketPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                ticketPriceField.setText(oldValue);
+            }
+        });
     }
     
     private void loadMovies() {
@@ -188,17 +180,17 @@ public class ShowFormController implements Initializable {
             return false;
         }
         
-        if (datePicker.getValue() == null) {
+        if (showDatePicker.getValue() == null) {
             errorLabel.setText("Please select a date.");
             return false;
         }
         
-        if (hourComboBox.getValue() == null || minuteComboBox.getValue() == null) {
-            errorLabel.setText("Please select a valid time.");
+        if (showTimeField.getText().isEmpty() || !showTimeField.getText().matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
+            errorLabel.setText("Please enter a valid time in format HH:MM.");
             return false;
         }
         
-        if (priceField.getText().isEmpty()) {
+        if (ticketPriceField.getText().isEmpty()) {
             errorLabel.setText("Please enter a ticket price.");
             return false;
         }
@@ -214,9 +206,9 @@ public class ShowFormController implements Initializable {
                 // Set parameters
                 statement.setInt(1, movieComboBox.getValue().getId());
                 statement.setInt(2, hallComboBox.getValue().getId());
-                statement.setDate(3, java.sql.Date.valueOf(datePicker.getValue()));
+                statement.setDate(3, java.sql.Date.valueOf(showDatePicker.getValue()));
                 statement.setTime(4, java.sql.Time.valueOf(getSelectedTime()));
-                statement.setDouble(5, Double.parseDouble(priceField.getText()));
+                statement.setDouble(5, Double.parseDouble(ticketPriceField.getText()));
                 statement.setInt(6, availabilitySpinner.getValue());
                 
                 int rowsAffected = statement.executeUpdate();
@@ -250,9 +242,9 @@ public class ShowFormController implements Initializable {
                 // Set parameters
                 statement.setInt(1, movieComboBox.getValue().getId());
                 statement.setInt(2, hallComboBox.getValue().getId());
-                statement.setDate(3, java.sql.Date.valueOf(datePicker.getValue()));
+                statement.setDate(3, java.sql.Date.valueOf(showDatePicker.getValue()));
                 statement.setTime(4, java.sql.Time.valueOf(getSelectedTime()));
-                statement.setDouble(5, Double.parseDouble(priceField.getText()));
+                statement.setDouble(5, Double.parseDouble(ticketPriceField.getText()));
                 statement.setInt(6, availabilitySpinner.getValue());
                 statement.setInt(7, showToUpdate.getId());
                 
@@ -280,9 +272,15 @@ public class ShowFormController implements Initializable {
     }
     
     private LocalTime getSelectedTime() {
-        int hour = Integer.parseInt(hourComboBox.getValue());
-        int minute = Integer.parseInt(minuteComboBox.getValue());
-        return LocalTime.of(hour, minute);
+        try {
+            String[] timeComponents = showTimeField.getText().split(":");
+            int hour = Integer.parseInt(timeComponents[0]);
+            int minute = Integer.parseInt(timeComponents[1]);
+            return LocalTime.of(hour, minute);
+        } catch (Exception e) {
+            // In case of any parsing error, return a default time
+            return LocalTime.of(18, 0); // Default to 6:00 PM
+        }
     }
     
     public void setShowForUpdate(ShowModel show) {
@@ -304,15 +302,14 @@ public class ShowFormController implements Initializable {
         }
         
         // Set the date (already a LocalDate, no conversion needed)
-        datePicker.setValue(show.getShowDate());
+        showDatePicker.setValue(show.getShowDate());
         
         // Set the time (already a LocalTime, no conversion needed)
         LocalTime time = show.getShowTime();
-        hourComboBox.setValue(String.format("%02d", time.getHour()));
-        minuteComboBox.setValue(String.format("%02d", time.getMinute()));
+        showTimeField.setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
         
         // Set the price
-        priceField.setText(String.valueOf(show.getTicketPrice()));
+        ticketPriceField.setText(String.valueOf(show.getTicketPrice()));
         
         // Set availability using the property added to ShowModel
         try {
