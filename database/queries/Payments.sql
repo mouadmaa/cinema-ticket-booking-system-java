@@ -1,13 +1,13 @@
 DROP TABLE IF EXISTS Payments;
 
 CREATE TABLE Payments (
-                          id            SERIAL PRIMARY KEY,
-                          booking_id    INTEGER      NOT NULL,
-                          status        VARCHAR(20)  NOT NULL CHECK (status IN ('Completed', 'Pending', 'Failed')),
-                          amount        DECIMAL(6,2) NOT NULL CHECK (amount >= 5.00 AND amount <= 50.00),
-                          payment_method VARCHAR(20) NOT NULL CHECK (payment_method IN ('Credit Card', 'Debit Card', 'Cash', 'Online')),
-                          payment_date  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                          CONSTRAINT fk_booking FOREIGN KEY (booking_id) REFERENCES Bookings(id) ON DELETE CASCADE
+      id            SERIAL PRIMARY KEY,
+      booking_id    INTEGER      NOT NULL,
+      status        VARCHAR(20)  NOT NULL CHECK (status IN ('Completed', 'Pending', 'Failed')),
+      amount        DECIMAL(6,2) NOT NULL CHECK (amount >= 5.00 AND amount <= 50.00),
+      payment_method VARCHAR(20) NOT NULL CHECK (payment_method IN ('Credit Card', 'Debit Card', 'Cash', 'Online')),
+      payment_date  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_booking FOREIGN KEY (booking_id) REFERENCES Bookings(id) ON DELETE CASCADE
 );
 
 INSERT INTO Payments (booking_id, status, amount, payment_method, payment_date)
