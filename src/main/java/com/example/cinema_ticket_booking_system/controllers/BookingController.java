@@ -118,7 +118,7 @@ public class BookingController implements Initializable {
             String query = "SELECT b.*, " +
                     "CONCAT(c.first_name, ' ', c.last_name) AS client_name, " +
                     "CONCAT(m.title, ' (', TO_CHAR(s.show_date, 'YYYY-MM-DD HH24:MI'), ')') AS show_info, " +
-                    "CONCAT('Hall ', h.hall_number, ' - Seat ', st.seat_number) AS seat_info " +
+                    "CONCAT('Hall: ', h.name, ' - Seat ID: ', st.id) AS seat_info " +
                     "FROM Bookings b " +
                     "JOIN Clients c ON b.client_id = c.id " +
                     "JOIN Shows s ON b.show_id = s.id " +
