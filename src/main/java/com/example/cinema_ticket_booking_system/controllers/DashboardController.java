@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -37,6 +38,9 @@ public class DashboardController implements Initializable {
     @FXML
     private JFXButton seatButton;
 
+    @FXML
+    private JFXButton showButton;
+    
     @FXML
     private AnchorPane contentPane;
 
@@ -80,6 +84,11 @@ public class DashboardController implements Initializable {
     private void handleSeatButton() throws IOException {
         loadSeatView();
     }
+    
+    @FXML
+    private void handleShowButton() throws IOException {
+        loadShowView();
+    }
 
     private void setupButtonIcons() {
         // Create a home icon
@@ -117,12 +126,20 @@ public class DashboardController implements Initializable {
         seatButton.setGraphic(seatIcon);
         seatButton.setGraphicTextGap(10);
         
+        // Create a show icon for the show management button
+        FontAwesomeIconView showIcon = new FontAwesomeIconView(FontAwesomeIcon.CALENDAR);
+        showIcon.setSize("18");
+        showIcon.setFill(Color.WHITE);
+        showButton.setGraphic(showIcon);
+        showButton.setGraphicTextGap(10);
+        
         // Apply styling to buttons
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
         movieButton.getStyleClass().add("dashboard-button");
         hallButton.getStyleClass().add("dashboard-button");
         seatButton.getStyleClass().add("dashboard-button");
+        showButton.getStyleClass().add("dashboard-button");
     }
 
     @FXML
@@ -183,6 +200,15 @@ public class DashboardController implements Initializable {
         movieButton.setStyle(DEFAULT_BUTTON_STYLE);
         hallButton.setStyle(DEFAULT_BUTTON_STYLE);
         seatButton.setStyle(DEFAULT_BUTTON_STYLE);
+        showButton.setStyle(DEFAULT_BUTTON_STYLE);
+    }
+    
+    private void loadShowView() throws IOException {
+        resetButtonStyles();
+        showButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("ShowView.fxml"));
+        BorderPane showView = loader.load();
+        setContent(showView);
     }
 
     private void setContentPane(AnchorPane view) {
