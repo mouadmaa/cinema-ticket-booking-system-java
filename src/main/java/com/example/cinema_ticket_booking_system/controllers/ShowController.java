@@ -146,7 +146,7 @@ public class ShowController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(String.format("$%.2f", item));
+                    setText(String.format("%.2f DH", item));
                 }
             }
         });

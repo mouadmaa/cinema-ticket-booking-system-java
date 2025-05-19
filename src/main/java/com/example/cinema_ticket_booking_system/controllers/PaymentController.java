@@ -66,7 +66,7 @@ public class PaymentController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText("$" + item);
+                    setText(item + " DH");
                 }
             }
         });

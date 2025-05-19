@@ -70,7 +70,7 @@ public class TicketController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText("$" + item);
+                    setText(item + " DH");
                 }
             }
         });
