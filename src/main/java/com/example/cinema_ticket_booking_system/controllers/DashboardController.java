@@ -51,6 +51,9 @@ public class DashboardController implements Initializable {
     private JFXButton ticketButton;
     
     @FXML
+    private JFXButton paymentButton;
+    
+    @FXML
     private AnchorPane contentPane;
 
     // Store the current authenticated user
@@ -112,6 +115,11 @@ public class DashboardController implements Initializable {
     @FXML
     private void handleTicketButton() throws IOException {
         loadTicketView();
+    }
+    
+    @FXML
+    private void handlePaymentButton() throws IOException {
+        loadPaymentView();
     }
 
     private void setupButtonIcons() {
@@ -178,6 +186,13 @@ public class DashboardController implements Initializable {
         ticketButton.setGraphic(ticketIcon);
         ticketButton.setGraphicTextGap(10);
         
+        // Create a payment icon for the payment management button
+        FontAwesomeIconView paymentIcon = new FontAwesomeIconView(FontAwesomeIcon.MONEY);
+        paymentIcon.setSize("18");
+        paymentIcon.setFill(Color.WHITE);
+        paymentButton.setGraphic(paymentIcon);
+        paymentButton.setGraphicTextGap(10);
+        
         // Apply styling to buttons
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
@@ -188,6 +203,7 @@ public class DashboardController implements Initializable {
         clientButton.getStyleClass().add("dashboard-button");
         bookingButton.getStyleClass().add("dashboard-button");
         ticketButton.getStyleClass().add("dashboard-button");
+        paymentButton.getStyleClass().add("dashboard-button");
     }
 
     @FXML
@@ -252,6 +268,7 @@ public class DashboardController implements Initializable {
         clientButton.setStyle(DEFAULT_BUTTON_STYLE);
         bookingButton.setStyle(DEFAULT_BUTTON_STYLE);
         ticketButton.setStyle(DEFAULT_BUTTON_STYLE);
+        paymentButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
     
     private void loadShowView() throws IOException {
@@ -284,6 +301,14 @@ public class DashboardController implements Initializable {
         FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("TicketView.fxml"));
         BorderPane ticketView = loader.load();
         setContent(ticketView);
+    }
+    
+    private void loadPaymentView() throws IOException {
+        resetButtonStyles();
+        paymentButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("PaymentView.fxml"));
+        BorderPane paymentView = loader.load();
+        setContent(paymentView);
     }
 
     private void setContentPane(AnchorPane view) {

@@ -162,6 +162,20 @@
                         <Insets left="20.0" />
                     </padding>
                 </JFXButton>
+                <JFXButton fx:id="paymentButton" alignment="BASELINE_LEFT" buttonType="RAISED"
+                          graphicTextGap="10.0" onAction="#handlePaymentButton" prefHeight="50.0"
+                          prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;"
+                          text="Payments">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="MONEY" size="16" />
+                    </graphic>
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </JFXButton>
             </VBox>
             
             <!-- Footer area -->
