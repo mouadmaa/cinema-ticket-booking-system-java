@@ -1,16 +1,288 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21">
-   <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="750.0"
-          style="-fx-background-color: #f8f9fa;" styleClass="h1" text="Welcome to Home View" textAlignment="CENTER"
-          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-          AnchorPane.topAnchor="0.0">
-      <font>
-         <Font size="24.0"/>
-      </font>
-   </Label>
+<AnchorPane prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cinema_ticket_booking_system.controllers.HomeController">
+   <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fitToWidth="true">
+      <VBox alignment="TOP_CENTER" prefWidth="880.0" spacing="15.0" style="-fx-background-color: #f8f9fa;">
+         <padding>
+            <Insets bottom="30.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <Label alignment="CENTER" styleClass="h1" text="Cinema Dashboard" textAlignment="CENTER">
+            <font>
+               <Font size="28.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="10.0" top="10.0" />
+            </VBox.margin>
+         </Label>
+
+         <!-- Key Performance Indicators -->
+         <TitledPane animated="true" collapsible="false" text="Key Performance Indicators" expanded="true" style="-fx-font-weight: bold;">
+            <VBox spacing="15.0">
+               <HBox spacing="25.0" alignment="CENTER">
+                  <BorderPane styleClass="kpi-box" style="-fx-background-color: #e3f2fd; -fx-background-radius: 8; -fx-border-color: #90caf9; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 3);" prefWidth="200" prefHeight="100">
+                     <top>
+                        <Label text="Total Revenue" style="-fx-font-weight: bold; -fx-text-fill: #1976d2;" BorderPane.alignment="CENTER">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                     </top>
+                     <center>
+                        <Label fx:id="totalRevenue" text="0.00 DH" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1565c0;" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  
+                  <BorderPane styleClass="kpi-box" style="-fx-background-color: #e8f5e9; -fx-background-radius: 8; -fx-border-color: #a5d6a7; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 3);" prefWidth="200" prefHeight="100">
+                     <top>
+                        <Label text="Tickets Sold (Week)" style="-fx-font-weight: bold; -fx-text-fill: #388e3c;" BorderPane.alignment="CENTER">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                     </top>
+                     <center>
+                        <Label fx:id="weeklyTickets" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2e7d32;" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+                  
+                  <BorderPane styleClass="kpi-box" style="-fx-background-color: #fff8e1; -fx-background-radius: 8; -fx-border-color: #ffecb3; -fx-border-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 3);" prefWidth="200" prefHeight="100">
+                     <top>
+                        <Label text="Average Occupancy" style="-fx-font-weight: bold; -fx-text-fill: #f57c00;" BorderPane.alignment="CENTER">
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </Label>
+                     </top>
+                     <center>
+                        <VBox alignment="CENTER">
+                           <Label fx:id="averageOccupancy" text="0%" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #e65100;" />
+                           <ProgressBar fx:id="occupancyProgressBar" progress="0.0" prefWidth="150.0" style="-fx-accent: #ff9800;" />
+                        </VBox>
+                     </center>
+                  </BorderPane>
+               </HBox>
+            </VBox>
+         </TitledPane>
+         
+         <!-- Popular Movies Section -->
+         <TitledPane animated="true" collapsible="false" text="Most Popular Movies" expanded="true" style="-fx-font-weight: bold;">
+            <VBox spacing="10.0">
+               <GridPane hgap="10.0" vgap="5.0">
+                  <Label text="Movie" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <Label text="Tickets Sold" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <Label text="Revenue" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                  
+                  <Label fx:id="topMovie1Name" text="-" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <Label fx:id="topMovie1Tickets" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="topMovie1Revenue" text="-" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  
+                  <Label fx:id="topMovie2Name" text="-" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  <Label fx:id="topMovie2Tickets" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="topMovie2Revenue" text="-" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  
+                  <Label fx:id="topMovie3Name" text="-" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                  <Label fx:id="topMovie3Tickets" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="topMovie3Revenue" text="-" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+                  <columnConstraints>
+                     <ColumnConstraints percentWidth="60.0" />
+                     <ColumnConstraints percentWidth="20.0" />
+                     <ColumnConstraints percentWidth="20.0" />
+                  </columnConstraints>
+               </GridPane>
+            </VBox>
+         </TitledPane>
+         
+         <!-- Upcoming Shows -->
+         <TitledPane animated="true" collapsible="false" text="Upcoming Shows (Next 7 Days)" expanded="true" style="-fx-font-weight: bold;">
+            <VBox spacing="10.0">
+               <GridPane hgap="10.0" vgap="5.0">
+                  <Label text="Movie" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <Label text="Hall" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  <Label text="Date &amp; Time" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                  <Label text="Available Seats" style="-fx-font-weight: bold;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                  
+                  <Label fx:id="upcomingShow1Movie" text="-" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <Label fx:id="upcomingShow1Hall" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="upcomingShow1DateTime" text="-" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="upcomingShow1Seats" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  
+                  <Label fx:id="upcomingShow2Movie" text="-" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  <Label fx:id="upcomingShow2Hall" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="upcomingShow2DateTime" text="-" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label fx:id="upcomingShow2Seats" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  
+                  <Label fx:id="upcomingShow3Movie" text="-" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                  <Label fx:id="upcomingShow3Hall" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="upcomingShow3DateTime" text="-" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Label fx:id="upcomingShow3Seats" text="-" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  
+                  <columnConstraints>
+                     <ColumnConstraints percentWidth="35.0" />
+                     <ColumnConstraints percentWidth="20.0" />
+                     <ColumnConstraints percentWidth="25.0" />
+                     <ColumnConstraints percentWidth="20.0" />
+                  </columnConstraints>
+               </GridPane>
+            </VBox>
+         </TitledPane>
+         
+         <!-- Database Statistics -->
+         <TitledPane animated="true" collapsible="true" text="Database Records" style="-fx-font-weight: bold;">
+            <GridPane alignment="CENTER" hgap="20.0" vgap="15.0">
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+               
+               <!-- Row 1 -->
+               <Label text="Movies:" styleClass="stat-label" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="movieCount" text="0" styleClass="stat-value" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <Label text="Shows:" styleClass="stat-label" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="showCount" text="0" styleClass="stat-value" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <!-- Row 2 -->
+               <Label text="Halls:" styleClass="stat-label" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="hallCount" text="0" styleClass="stat-value" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <Label text="Seats:" styleClass="stat-label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="seatCount" text="0" styleClass="stat-value" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <!-- Row 3 -->
+               <Label text="Users:" styleClass="stat-label" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="userCount" text="0" styleClass="stat-value" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <Label text="Clients:" styleClass="stat-label" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="clientCount" text="0" styleClass="stat-value" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <!-- Row 4 -->
+               <Label text="Bookings:" styleClass="stat-label" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="bookingCount" text="0" styleClass="stat-value" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <Label text="Tickets:" styleClass="stat-label" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="ticketCount" text="0" styleClass="stat-value" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <!-- Row 5 -->
+               <Label text="Payments:" styleClass="stat-label" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="paymentCount" text="0" styleClass="stat-value" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <!-- Additional Stats Row 6 -->
+               <Label text="Active Shows:" styleClass="stat-label" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="activeShows" text="0" styleClass="stat-value" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <Label text="Today's Bookings:" styleClass="stat-label" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               <Label fx:id="todayBookings" text="0" styleClass="stat-value" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+               
+               <columnConstraints>
+                  <ColumnConstraints percentWidth="25.0" />
+                  <ColumnConstraints percentWidth="25.0" />
+                  <ColumnConstraints percentWidth="25.0" />
+                  <ColumnConstraints percentWidth="25.0" />
+               </columnConstraints>
+            </GridPane>
+         </TitledPane>
+      </VBox>
+   </ScrollPane>
 </AnchorPane>
