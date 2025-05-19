@@ -42,6 +42,12 @@ public class DashboardController implements Initializable {
     private JFXButton showButton;
     
     @FXML
+    private JFXButton clientButton;
+    
+    @FXML
+    private JFXButton bookingButton;
+    
+    @FXML
     private AnchorPane contentPane;
 
     // Store the current authenticated user
@@ -89,6 +95,16 @@ public class DashboardController implements Initializable {
     private void handleShowButton() throws IOException {
         loadShowView();
     }
+    
+    @FXML
+    private void handleClientButton() throws IOException {
+        loadClientView();
+    }
+    
+    @FXML
+    private void handleBookingButton() throws IOException {
+        loadBookingView();
+    }
 
     private void setupButtonIcons() {
         // Create a home icon
@@ -133,6 +149,20 @@ public class DashboardController implements Initializable {
         showButton.setGraphic(showIcon);
         showButton.setGraphicTextGap(10);
         
+        // Create a client icon for the client management button
+        FontAwesomeIconView clientIcon = new FontAwesomeIconView(FontAwesomeIcon.USER);
+        clientIcon.setSize("18");
+        clientIcon.setFill(Color.WHITE);
+        clientButton.setGraphic(clientIcon);
+        clientButton.setGraphicTextGap(10);
+        
+        // Create a booking icon for the booking management button
+        FontAwesomeIconView bookingIcon = new FontAwesomeIconView(FontAwesomeIcon.TICKET);
+        bookingIcon.setSize("18");
+        bookingIcon.setFill(Color.WHITE);
+        bookingButton.setGraphic(bookingIcon);
+        bookingButton.setGraphicTextGap(10);
+        
         // Apply styling to buttons
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
@@ -140,6 +170,8 @@ public class DashboardController implements Initializable {
         hallButton.getStyleClass().add("dashboard-button");
         seatButton.getStyleClass().add("dashboard-button");
         showButton.getStyleClass().add("dashboard-button");
+        clientButton.getStyleClass().add("dashboard-button");
+        bookingButton.getStyleClass().add("dashboard-button");
     }
 
     @FXML
@@ -201,6 +233,8 @@ public class DashboardController implements Initializable {
         hallButton.setStyle(DEFAULT_BUTTON_STYLE);
         seatButton.setStyle(DEFAULT_BUTTON_STYLE);
         showButton.setStyle(DEFAULT_BUTTON_STYLE);
+        clientButton.setStyle(DEFAULT_BUTTON_STYLE);
+        bookingButton.setStyle(DEFAULT_BUTTON_STYLE);
     }
     
     private void loadShowView() throws IOException {
@@ -209,6 +243,22 @@ public class DashboardController implements Initializable {
         FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("ShowView.fxml"));
         BorderPane showView = loader.load();
         setContent(showView);
+    }
+    
+    private void loadClientView() throws IOException {
+        resetButtonStyles();
+        clientButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("ClientView.fxml"));
+        BorderPane clientView = loader.load();
+        setContent(clientView);
+    }
+    
+    private void loadBookingView() throws IOException {
+        resetButtonStyles();
+        bookingButton.setStyle(ACTIVE_BUTTON_STYLE);
+        FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("BookingView.fxml"));
+        BorderPane bookingView = loader.load();
+        setContent(bookingView);
     }
 
     private void setContentPane(AnchorPane view) {

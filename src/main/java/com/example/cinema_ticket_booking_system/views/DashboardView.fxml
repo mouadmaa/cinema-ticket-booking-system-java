@@ -120,6 +120,34 @@
                         <Insets left="20.0" />
                     </padding>
                 </JFXButton>
+                <JFXButton fx:id="clientButton" alignment="BASELINE_LEFT" buttonType="RAISED"
+                          graphicTextGap="10.0" onAction="#handleClientButton" prefHeight="50.0"
+                          prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;"
+                          text="Clients">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="USER" size="16" />
+                    </graphic>
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </JFXButton>
+                <JFXButton fx:id="bookingButton" alignment="BASELINE_LEFT" buttonType="RAISED"
+                          graphicTextGap="10.0" onAction="#handleBookingButton" prefHeight="50.0"
+                          prefWidth="220.0" style="-fx-background-color: #263238; -fx-text-fill: white;"
+                          text="Bookings">
+                    <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="TICKET" size="16" />
+                    </graphic>
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </JFXButton>
             </VBox>
             
             <!-- Footer area -->
