@@ -81,7 +81,7 @@ public class UserController implements Initializable {
         addUserButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
     }
 
-    private void setupTableColumns() {
+    void setupTableColumns() {
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         roleColumn.setCellValueFactory(cellData -> cellData.getValue().roleProperty());
         firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
@@ -106,7 +106,7 @@ public class UserController implements Initializable {
         setupActionsColumn();
     }
 
-    private void loadUsers() {
+    void loadUsers() {
         ObservableList<UserModel> users = FXCollections.observableArrayList();
 
         try (Connection connection = SingletonConnection.getConnection()) {
@@ -143,7 +143,7 @@ public class UserController implements Initializable {
     /**
      * Adjust columns to fit content after data is loaded
      */
-    private void autoResizeColumns() {
+    void autoResizeColumns() {
         userTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         userTableView.getColumns().forEach(column -> {
@@ -153,7 +153,7 @@ public class UserController implements Initializable {
     }
 
 
-    private void showErrorAlert(String title, String header, String content) {
+    void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -176,11 +176,11 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    private void handleAddUserButton(ActionEvent event) {
+    void handleAddUserButton(ActionEvent event) {
         openUserForm(null);
     }
     
-    private void handleUpdateUser(UserModel user) {
+    void handleUpdateUser(UserModel user) {
         openUserForm(user);
     }
     
@@ -224,7 +224,7 @@ public class UserController implements Initializable {
         });
     }
     
-    private void openUserForm(UserModel user) {
+    void openUserForm(UserModel user) {
         try {
             FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("UserFormView.fxml"));
             Parent root = loader.load();
@@ -249,7 +249,7 @@ public class UserController implements Initializable {
         }
     }
     
-    private void deleteUser(int userId) {
+    void deleteUser(int userId) {
         try (Connection connection = SingletonConnection.getConnection()) {
             String sql = "DELETE FROM Users WHERE id = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -268,7 +268,7 @@ public class UserController implements Initializable {
         }
     }
     
-    private void setupActionsColumn() {
+    void setupActionsColumn() {
         actionsColumn.setCellFactory(param -> new TableCell<>() {
             private final Button updateBtn = new Button();
             private final Button deleteBtn = new Button();
