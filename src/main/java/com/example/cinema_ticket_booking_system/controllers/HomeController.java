@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -176,7 +177,7 @@ public class HomeController implements Initializable {
     private int getActiveShowsCount() {
         int count = 0;
         try {
-            String query = "SELECT COUNT(*) AS total FROM shows WHERE datetime > CURRENT_TIMESTAMP()";
+            String query = "SELECT COUNT(*) AS total FROM shows WHERE show_date > CURRENT_DATE";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             
@@ -195,7 +196,7 @@ public class HomeController implements Initializable {
     private int getTodayBookingsCount() {
         int count = 0;
         try {
-            String query = "SELECT COUNT(*) AS total FROM bookings WHERE DATE(booking_date) = CURRENT_DATE()";
+            String query = "SELECT COUNT(*) AS total FROM bookings WHERE DATE(booking_date) = CURRENT_DATE";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             
@@ -245,7 +246,7 @@ public class HomeController implements Initializable {
         try {
             String query = "SELECT COUNT(*) AS total_tickets FROM tickets " +
                            "JOIN bookings ON tickets.booking_id = bookings.id " +
-                           "WHERE booking_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)";
+                           "WHERE booking_date >= CURRENT_DATE - INTERVAL '7 days'";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             
@@ -272,14 +273,14 @@ public class HomeController implements Initializable {
     private double getAverageOccupancyRate() {
         double occupancyRate = 0.0;
         try {
-            String query = "SELECT AVG(occupancy_rate) AS avg_occupancy FROM (" +
-                           "SELECT COUNT(t.id) / h.capacity AS occupancy_rate " +
+            String query = "SELECT AVG(occupancy_rate) AS avg_occupancy FROM " +
+                           "(SELECT CAST(COUNT(t.id) AS DECIMAL) / h.capacity AS occupancy_rate " +
                            "FROM shows s " +
                            "JOIN halls h ON s.hall_id = h.id " +
                            "LEFT JOIN bookings b ON b.show_id = s.id " +
                            "LEFT JOIN tickets t ON t.booking_id = b.id " +
-                           "WHERE s.datetime < CURRENT_TIMESTAMP() " +
-                           "GROUP BY s.id) AS show_occupancy";
+                           "WHERE s.show_date < CURRENT_DATE " +
+                           "GROUP BY s.id, h.capacity) AS show_occupancy";
             
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -349,16 +350,16 @@ public class HomeController implements Initializable {
     
     private void loadUpcomingShows() {
         try {
-            String query = "SELECT m.title, h.name AS hall_name, s.datetime, " +
+            String query = "SELECT m.title, h.name AS hall_name, s.show_date, s.show_time, " +
                            "(h.capacity - COUNT(t.id)) AS available_seats " +
                            "FROM shows s " +
                            "JOIN movies m ON s.movie_id = m.id " +
                            "JOIN halls h ON s.hall_id = h.id " +
                            "LEFT JOIN bookings b ON b.show_id = s.id " +
                            "LEFT JOIN tickets t ON t.booking_id = b.id " +
-                           "WHERE s.datetime BETWEEN CURRENT_TIMESTAMP() AND DATE_ADD(CURRENT_DATE(), INTERVAL 7 DAY) " +
-                           "GROUP BY s.id " +
-                           "ORDER BY s.datetime ASC " +
+                           "WHERE s.show_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days' " +
+                           "GROUP BY s.id, m.title, h.name, s.show_date, s.show_time, h.capacity " +
+                           "ORDER BY s.show_date ASC, s.show_time ASC " +
                            "LIMIT 3";
             
             PreparedStatement statement = connection.prepareStatement(query);
@@ -368,7 +369,12 @@ public class HomeController implements Initializable {
             while (resultSet.next() && row <= 3) {
                 String movieTitle = resultSet.getString("title");
                 String hallName = resultSet.getString("hall_name");
-                LocalDateTime showDateTime = resultSet.getTimestamp("datetime").toLocalDateTime();
+                
+                // Create a LocalDateTime from the separate date and time columns
+                LocalDate showDate = resultSet.getDate("show_date").toLocalDate();
+                LocalTime showTime = resultSet.getTime("show_time").toLocalTime();
+                LocalDateTime showDateTime = LocalDateTime.of(showDate, showTime);
+                
                 int availableSeats = resultSet.getInt("available_seats");
                 
                 String formattedDateTime = showDateTime.format(dateTimeFormatter);

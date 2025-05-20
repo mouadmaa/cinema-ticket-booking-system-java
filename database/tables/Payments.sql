@@ -1,3 +1,5 @@
+USE CINEMA_DB;
+
 DROP TABLE IF EXISTS Payments;
 
 CREATE TABLE Payments (
