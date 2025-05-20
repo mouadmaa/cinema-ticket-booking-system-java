@@ -10,9 +10,7 @@ public class SingletonConnection {
     private static final String USER = "mouadmaa";
     private static final String PASSWORD = "P@ssw0rd123";
 
-    private SingletonConnection() {
-        // Private constructor to prevent instantiation
-    }
+    private SingletonConnection() {}
 
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
