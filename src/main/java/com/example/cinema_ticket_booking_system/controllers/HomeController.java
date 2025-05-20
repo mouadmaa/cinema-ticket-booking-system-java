@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 
 public class HomeController implements Initializable {
 
-    // Basic count statistics
     @FXML
     private Label movieCount;
     
@@ -46,15 +45,13 @@ public class HomeController implements Initializable {
     
     @FXML
     private Label paymentCount;
-    
-    // Additional basic stats
+
     @FXML
     private Label activeShows;
     
     @FXML
     private Label todayBookings;
-    
-    // KPI statistics
+
     @FXML
     private Label totalRevenue;
     
@@ -66,8 +63,7 @@ public class HomeController implements Initializable {
     
     @FXML
     private ProgressBar occupancyProgressBar;
-    
-    // Top movies statistics
+
     @FXML
     private Label topMovie1Name;
     
@@ -94,8 +90,7 @@ public class HomeController implements Initializable {
     
     @FXML
     private Label topMovie3Revenue;
-    
-    // Upcoming shows
+
     @FXML
     private Label upcomingShow1Movie;
     
@@ -148,21 +143,16 @@ public class HomeController implements Initializable {
     }
 
     private void loadAllStatistics() {
-        // Load basic table count statistics
         loadTableCountStatistics();
-        
-        // Load additional statistics
+
         loadAdditionalBasicStats();
-        
-        // Load KPI statistics
+
         loadRevenueStatistics();
         loadWeeklyTicketsSold();
         loadOccupancyRate();
-        
-        // Load top movies
+
         loadTopMoviesStatistics();
-        
-        // Load upcoming shows
+
         loadUpcomingShows();
     }
     
@@ -186,7 +176,6 @@ public class HomeController implements Initializable {
     private int getActiveShowsCount() {
         int count = 0;
         try {
-            // Query to get shows that are scheduled in the future
             String query = "SELECT COUNT(*) AS total FROM shows WHERE datetime > CURRENT_TIMESTAMP()";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -206,7 +195,6 @@ public class HomeController implements Initializable {
     private int getTodayBookingsCount() {
         int count = 0;
         try {
-            // Query to get bookings made today
             String query = "SELECT COUNT(*) AS total FROM bookings WHERE DATE(booking_date) = CURRENT_DATE()";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -231,7 +219,6 @@ public class HomeController implements Initializable {
     private double getTotalRevenue() {
         double revenue = 0.0;
         try {
-            // Query to get the sum of all payment amounts
             String query = "SELECT SUM(amount) AS total_revenue FROM payments";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -256,7 +243,6 @@ public class HomeController implements Initializable {
     private int getWeeklyTicketsSold() {
         int count = 0;
         try {
-            // Query to get tickets booked in the last 7 days
             String query = "SELECT COUNT(*) AS total_tickets FROM tickets " +
                            "JOIN bookings ON tickets.booking_id = bookings.id " +
                            "WHERE booking_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)";
@@ -277,19 +263,15 @@ public class HomeController implements Initializable {
     
     private void loadOccupancyRate() {
         double rate = getAverageOccupancyRate();
-        
-        // Update progress bar value
+
         occupancyProgressBar.setProgress(rate);
-        
-        // Format percentage for display
+
         averageOccupancy.setText(percentFormat.format(rate));
     }
     
     private double getAverageOccupancyRate() {
         double occupancyRate = 0.0;
         try {
-            // Complex query to calculate average occupancy
-            // Counts tickets sold for past shows and compares with total seats in halls
             String query = "SELECT AVG(occupancy_rate) AS avg_occupancy FROM (" +
                            "SELECT COUNT(t.id) / h.capacity AS occupancy_rate " +
                            "FROM shows s " +
@@ -304,7 +286,6 @@ public class HomeController implements Initializable {
             
             if (resultSet.next()) {
                 occupancyRate = resultSet.getDouble("avg_occupancy");
-                // Handle null result
                 if (resultSet.wasNull()) {
                     occupancyRate = 0.0;
                 }
@@ -320,7 +301,6 @@ public class HomeController implements Initializable {
     
     private void loadTopMoviesStatistics() {
         try {
-            // Query to get top 3 movies by ticket sales
             String query = "SELECT m.title, COUNT(t.id) AS tickets_sold, SUM(p.amount) AS revenue " +
                            "FROM movies m " +
                            "JOIN shows s ON s.movie_id = m.id " +
@@ -339,8 +319,7 @@ public class HomeController implements Initializable {
                 String title = resultSet.getString("title");
                 int ticketsSold = resultSet.getInt("tickets_sold");
                 double revenue = resultSet.getDouble("revenue");
-                
-                // Update UI based on which row we're on
+
                 switch (row) {
                     case 1:
                         topMovie1Name.setText(title);
@@ -370,7 +349,6 @@ public class HomeController implements Initializable {
     
     private void loadUpcomingShows() {
         try {
-            // Query to get upcoming shows in the next 7 days
             String query = "SELECT m.title, h.name AS hall_name, s.datetime, " +
                            "(h.capacity - COUNT(t.id)) AS available_seats " +
                            "FROM shows s " +
@@ -394,8 +372,7 @@ public class HomeController implements Initializable {
                 int availableSeats = resultSet.getInt("available_seats");
                 
                 String formattedDateTime = showDateTime.format(dateTimeFormatter);
-                
-                // Update UI based on which row we're on
+
                 switch (row) {
                     case 1:
                         upcomingShow1Movie.setText(movieTitle);

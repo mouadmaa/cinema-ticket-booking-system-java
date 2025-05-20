@@ -62,46 +62,38 @@ public class SeatController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Setup table columns
         setupTableColumns();
-        
-        // Load hall data for the filter combobox
+
         loadHalls();
-        
-        // Add listener to the hall filter combobox
+
         hallFilterComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 filterSeatsByHall(newVal.getId());
             } else {
-                // If no hall is selected, show all seats
                 seatTableView.setItems(allSeats);
             }
         });
-        
-        // Load all seats by default
+
         loadSeats();
     }
     
     private void setupTableColumns() {
-        // Configure the table columns using property value factories
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         hallNameColumn.setCellValueFactory(cellData -> cellData.getValue().hallNameProperty());
         seatNumberColumn.setCellValueFactory(cellData -> cellData.getValue().seatNumberProperty());
         seatTypeColumn.setCellValueFactory(cellData -> cellData.getValue().seatTypeProperty());
         availabilityColumn.setCellValueFactory(cellData -> cellData.getValue().isAvailableProperty());
+
+        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        hallNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        seatNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        seatTypeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+        availabilityColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
         
-        // Set column proportional widths
-        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        hallNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
-        seatNumberColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
-        seatTypeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 20); // 20% width
-        availabilityColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-        
-            // Set minimum width for actions column to ensure buttons fit
+
             actionsColumn.setMinWidth(80);
-            
-            // Format availability column to display checkmarks
+
             availabilityColumn.setCellFactory(column -> new TableCell<>() {
                 @Override
                 protected void updateItem(Boolean item, boolean empty) {
@@ -127,14 +119,11 @@ public class SeatController implements Initializable {
                     }
                 }
             });
-            
-            // Configure actions column with edit and delete buttons
+
             setupActionsColumn();
-            
-            // Set alignment for availability column to center
+
             availabilityColumn.setStyle("-fx-alignment: CENTER;");
-            
-            // Ensure table uses all available width
+
             seatTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
@@ -145,8 +134,7 @@ public class SeatController implements Initializable {
             String query = "SELECT id, name, capacity FROM Halls ORDER BY name";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 ResultSet resultSet = statement.executeQuery();
-                
-                // Add a "All Halls" option
+
                 halls.add(null);
                 
                 while (resultSet.next()) {
@@ -158,8 +146,7 @@ public class SeatController implements Initializable {
                 }
                 
                 hallFilterComboBox.setItems(halls);
-                
-                // Set a custom cell factory to display hall names
+
                 hallFilterComboBox.setCellFactory(param -> new ListCell<>() {
                     @Override
                     protected void updateItem(HallModel item, boolean empty) {
@@ -171,8 +158,7 @@ public class SeatController implements Initializable {
                         }
                     }
                 });
-                
-                // Set the same approach for the button cell
+
                 hallFilterComboBox.setButtonCell(new ListCell<>() {
                     @Override
                     protected void updateItem(HallModel item, boolean empty) {
@@ -238,7 +224,7 @@ public class SeatController implements Initializable {
     
     @FXML
     private void handleAddSeatButton(ActionEvent event) {
-        openSeatForm(null); // Pass null for adding a new seat
+        openSeatForm(null);
     }
     
     private void openSeatForm(SeatModel seat) {
@@ -248,19 +234,16 @@ public class SeatController implements Initializable {
             
             SeatFormController controller = loader.getController();
             controller.setRefreshCallback(this::loadSeats);
-            
-            // If updating, set the seat to be updated
+
             if (seat != null) {
                 controller.setSeatForUpdate(seat);
             }
-            
-            // Create a new stage for the dialog
+
             Stage stage = new Stage();
             stage.setTitle(seat == null ? "Add Seat" : "Update Seat");
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-            
-            // Show the dialog and wait for it to close
+            stage.initModality(Modality.APPLICATION_MODAL);
+
             stage.showAndWait();
             
         } catch (IOException e) {
@@ -276,7 +259,6 @@ public class SeatController implements Initializable {
             private final HBox pane = new HBox(8, updateBtn, deleteBtn);
             
             {
-                // Create and style the update button with icon only
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView editIcon = 
                     new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.EDIT);
                 editIcon.setSize("12");
@@ -285,8 +267,7 @@ public class SeatController implements Initializable {
                 updateBtn.setGraphic(editIcon);
                 updateBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 2; -fx-min-width: 24px; -fx-min-height: 24px; -fx-max-width: 24px; -fx-max-height: 24px; -fx-padding: 2px;");
                 updateBtn.setTooltip(new javafx.scene.control.Tooltip("Edit seat"));
-                
-                // Create and style the delete button with icon only
+
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
                     new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
                 deleteIcon.setSize("12");
@@ -297,8 +278,7 @@ public class SeatController implements Initializable {
                 deleteBtn.setTooltip(new javafx.scene.control.Tooltip("Delete seat"));
                 
                 pane.setAlignment(javafx.geometry.Pos.CENTER);
-                
-                // Set button actions
+
                 updateBtn.setOnAction(event -> {
                     SeatModel seat = getTableView().getItems().get(getIndex());
                     handleUpdateSeat(seat);
@@ -327,17 +307,14 @@ public class SeatController implements Initializable {
         confirmDialog.setTitle("Confirm Delete");
         confirmDialog.setHeaderText("Delete Seat");
         confirmDialog.setContentText("Are you sure you want to delete seat " + seat.getSeatNumber() + " in hall " + seat.getHallName() + "?");
-        
-        // Create custom buttons
+
         ButtonType cancelButtonType = new ButtonType("Cancel");
         ButtonType deleteButtonType = new ButtonType("Delete");
         confirmDialog.getButtonTypes().setAll(cancelButtonType, deleteButtonType);
-        
-        // Add styling to buttons
+
         Button deleteButton = (Button) confirmDialog.getDialogPane().lookupButton(deleteButtonType);
         deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
-        
-        // Add icon to delete button
+
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
         deleteIcon.setFill(javafx.scene.paint.Color.WHITE);
@@ -360,7 +337,6 @@ public class SeatController implements Initializable {
                 int affectedRows = statement.executeUpdate();
                 
                 if (affectedRows > 0) {
-                    // Success - refresh the table
                     loadSeats();
                 } else {
                     showErrorAlert("Error", "Delete Failed", "No seat was deleted. The seat may not exist.");

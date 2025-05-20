@@ -26,13 +26,13 @@ public class ShowFormController implements Initializable {
     private ComboBox<HallModel> hallComboBox;
     
     @FXML
-    private DatePicker showDatePicker; // Updated to match FXML
+    private DatePicker showDatePicker;
     
     @FXML
-    private TextField showTimeField; // Single text field for time instead of combo boxes
+    private TextField showTimeField;
     
     @FXML
-    private TextField ticketPriceField; // Updated to match FXML
+    private TextField ticketPriceField;
     
     @FXML
     private Spinner<Integer> availabilitySpinner;
@@ -51,25 +51,19 @@ public class ShowFormController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure availability spinner
         SpinnerValueFactory<Integer> valueFactory = 
             new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 100);
         availabilitySpinner.setValueFactory(valueFactory);
-        
-        // Load movies and halls into combo boxes
+
         loadMovies();
         loadHalls();
-        
-        // Set default date to today
+
         showDatePicker.setValue(LocalDate.now());
-        
-        // Set default time to 18:00 (6:00 PM)
+
         showTimeField.setText("18:00");
-        
-        // Add validation for time field (format: HH:MM)
+
         showTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
-                // Only show error if it's not empty (allow user to clear and type)
                 if (!newValue.isEmpty()) {
                     errorLabel.setText("Invalid time format. Use HH:MM (24-hour)");
                 }
@@ -77,8 +71,7 @@ public class ShowFormController implements Initializable {
                 errorLabel.setText("");
             }
         });
-        
-        // Add validation for price field (only allow numbers and decimal point)
+
         ticketPriceField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*(\\.\\d*)?")) {
                 ticketPriceField.setText(oldValue);
@@ -100,22 +93,20 @@ public class ShowFormController implements Initializable {
                     String title = resultSet.getString("title");
                     String genre = resultSet.getString("genre");
                     int duration = resultSet.getInt("duration");
-                    
-                    // Get release date (handle potential null)
+
                     LocalDate releaseDate = null;
                     Date sqlDate = resultSet.getDate("release_date");
                     if (sqlDate != null) {
                         releaseDate = sqlDate.toLocalDate();
                     } else {
-                        releaseDate = LocalDate.now(); // Default to current date if null
+                        releaseDate = LocalDate.now();
                     }
                     
                     String description = resultSet.getString("description");
                     if (description == null) {
                         description = "";
                     }
-                    
-                    // Create movie with parameters in the correct order
+
                     MovieModel movie = new MovieModel(id, title, genre, duration, releaseDate, description);
                     movies.add(movie);
                 }
@@ -203,7 +194,6 @@ public class ShowFormController implements Initializable {
             String query = "INSERT INTO Shows (movie_id, hall_id, show_date, show_time, ticket_price, availability) VALUES (?, ?, ?, ?, ?, ?)";
             
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                // Set parameters
                 statement.setInt(1, movieComboBox.getValue().getId());
                 statement.setInt(2, hallComboBox.getValue().getId());
                 statement.setDate(3, java.sql.Date.valueOf(showDatePicker.getValue()));
@@ -214,15 +204,12 @@ public class ShowFormController implements Initializable {
                 int rowsAffected = statement.executeUpdate();
                 
                 if (rowsAffected > 0) {
-                    // Show success message
                     showInformationAlert("Success", "Show Added", "The show has been added successfully.");
-                    
-                    // Call the refresh callback to update the shows list
+
                     if (refreshCallback != null) {
                         refreshCallback.run();
                     }
-                    
-                    // Close the form
+
                     closeForm();
                 } else {
                     errorLabel.setText("Failed to add show. Please try again.");
@@ -239,7 +226,6 @@ public class ShowFormController implements Initializable {
             String query = "UPDATE Shows SET movie_id = ?, hall_id = ?, show_date = ?, show_time = ?, ticket_price = ?, availability = ? WHERE id = ?";
             
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                // Set parameters
                 statement.setInt(1, movieComboBox.getValue().getId());
                 statement.setInt(2, hallComboBox.getValue().getId());
                 statement.setDate(3, java.sql.Date.valueOf(showDatePicker.getValue()));
@@ -251,15 +237,12 @@ public class ShowFormController implements Initializable {
                 int rowsAffected = statement.executeUpdate();
                 
                 if (rowsAffected > 0) {
-                    // Show success message
                     showInformationAlert("Success", "Show Updated", "The show has been updated successfully.");
-                    
-                    // Call the refresh callback to update the shows list
+
                     if (refreshCallback != null) {
                         refreshCallback.run();
                     }
-                    
-                    // Close the form
+
                     closeForm();
                 } else {
                     errorLabel.setText("Failed to update show. Please try again.");
@@ -278,15 +261,13 @@ public class ShowFormController implements Initializable {
             int minute = Integer.parseInt(timeComponents[1]);
             return LocalTime.of(hour, minute);
         } catch (Exception e) {
-            // In case of any parsing error, return a default time
-            return LocalTime.of(18, 0); // Default to 6:00 PM
+            return LocalTime.of(18, 0);
         }
     }
     
     public void setShowForUpdate(ShowModel show) {
         this.showToUpdate = show;
-        
-        // Populate the form with the show's data
+
         for (MovieModel movie : movieComboBox.getItems()) {
             if (movie.getId() == show.getMovieId()) {
                 movieComboBox.setValue(movie);
@@ -300,26 +281,20 @@ public class ShowFormController implements Initializable {
                 break;
             }
         }
-        
-        // Set the date (already a LocalDate, no conversion needed)
+
         showDatePicker.setValue(show.getShowDate());
-        
-        // Set the time (already a LocalTime, no conversion needed)
+
         LocalTime time = show.getShowTime();
         showTimeField.setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
-        
-        // Set the price
+
         ticketPriceField.setText(String.valueOf(show.getTicketPrice()));
-        
-        // Set availability using the property added to ShowModel
+
         try {
             availabilitySpinner.getValueFactory().setValue(show.getAvailability());
         } catch (Exception e) {
-            // If there's any issue, use default value
             availabilitySpinner.getValueFactory().setValue(100);
         }
-        
-        // Update title
+
         saveButton.setText("Update");
     }
     
@@ -328,7 +303,6 @@ public class ShowFormController implements Initializable {
     }
     
     private void closeForm() {
-        // Get the current window
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }

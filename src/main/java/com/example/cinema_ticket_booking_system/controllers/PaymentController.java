@@ -49,7 +49,6 @@ public class PaymentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("clientName"));
         showInfoColumn.setCellValueFactory(new PropertyValueFactory<>("showInfo"));
@@ -57,8 +56,7 @@ public class PaymentController implements Initializable {
         paymentMethodColumn.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         paymentDateColumn.setCellValueFactory(new PropertyValueFactory<>("paymentDate"));
-        
-        // Format amount column
+
         amountColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(BigDecimal item, boolean empty) {
@@ -70,8 +68,7 @@ public class PaymentController implements Initializable {
                 }
             }
         });
-        
-        // Format date column
+
         paymentDateColumn.setCellFactory(column -> new TableCell<>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             
@@ -85,8 +82,7 @@ public class PaymentController implements Initializable {
                 }
             }
         });
-        
-        // Format status column with colors
+
         statusColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -113,8 +109,7 @@ public class PaymentController implements Initializable {
                 }
             }
         });
-        
-        // Format payment method column
+
         paymentMethodColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -144,11 +139,9 @@ public class PaymentController implements Initializable {
                 }
             }
         });
-        
-        // Load data from the database
+
         refreshPaymentTable();
-        
-        // Adjust column widths
+
         paymentTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
@@ -162,8 +155,7 @@ public class PaymentController implements Initializable {
         try {
             Connection conn = SingletonConnection.getConnection();
             Statement stmt = conn.createStatement();
-            
-            // Join with Booking, Client, and Show tables to get more information
+
             String query = "SELECT p.*, " +
                     "CONCAT(c.first_name, ' ', c.last_name) AS client_name, " +
                     "CONCAT(m.title, ' (', TO_CHAR(s.show_date, 'YYYY-MM-DD HH24:MI'), ')') AS show_info " +
@@ -194,7 +186,6 @@ public class PaymentController implements Initializable {
             
             rs.close();
             stmt.close();
-            // Don't close the connection as it's managed by SingletonConnection
             
         } catch (SQLException e) {
             System.err.println("Error fetching payments from database: " + e.getMessage());

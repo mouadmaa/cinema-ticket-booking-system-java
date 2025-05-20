@@ -45,14 +45,11 @@ public class AuthController {
             return;
         }
 
-        // Disable login button to prevent multiple clicks
         loginButton.setDisable(true);
 
-        // Authenticate user
         Optional<UserModel> authenticatedUser = userService.authenticateUser(email, password);
 
         if (authenticatedUser.isPresent()) {
-            // User authenticated successfully
             try {
                 loadDashboard(authenticatedUser.get());
             } catch (IOException e) {
@@ -60,10 +57,8 @@ public class AuthController {
                 showError("Error loading dashboard. Please try again.");
             }
         } else {
-            // Authentication failed
             showError("Invalid email or password. Please try again.");
-            
-            // Re-enable login button after a short delay
+
             PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
             pause.setOnFinished(e -> loginButton.setDisable(false));
             pause.play();
@@ -72,30 +67,23 @@ public class AuthController {
 
     private void showError(String message) {
         errorLabel.setText(message);
-        
-        // Re-enable login button
+
         loginButton.setDisable(false);
     }
 
     private void loadDashboard(UserModel user) throws IOException {
-        // Load the dashboard view
         FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("DashboardView.fxml"));
         Parent dashboardView = loader.load();
-        
-        // Get the controller and pass the authenticated user
+
         DashboardController dashboardController = loader.getController();
         dashboardController.setCurrentUser(user);
-        
-        // Get the current stage from the login button
+
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        
-        // Create new scene with dashboard view
+
         Scene scene = new Scene(dashboardView, 1200, 700);
-        
-        // Add material design CSS
+
         scene.getStylesheets().add(MainApplication.getCssUrl("material-design.css"));
-        
-        // Set the new scene
+
         stage.setScene(scene);
         stage.setTitle("Cinema Ticket Booking Dashboard");
         stage.centerOnScreen();

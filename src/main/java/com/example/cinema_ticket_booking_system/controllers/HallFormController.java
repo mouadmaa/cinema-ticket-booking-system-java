@@ -36,27 +36,22 @@ public class HallFormController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure capacity spinner (10-500 seats as per DB constraint)
         SpinnerValueFactory<Integer> valueFactory = 
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(10, 500, 100, 5);
         capacitySpinner.setValueFactory(valueFactory);
-        
-        // Clear any error message
+
         errorLabel.setText("");
-        
-        // Style the buttons
+
         styleButtons();
     }
     
     private void styleButtons() {
-        // Style the save button
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView saveIcon = 
                 new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.SAVE);
         saveIcon.setFill(javafx.scene.paint.Color.WHITE);
         saveButton.setGraphic(saveIcon);
         saveButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-background-radius: 2;");
-        
-        // Style the cancel button
+
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView cancelIcon = 
                 new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TIMES);
         cancelIcon.setFill(javafx.scene.paint.Color.WHITE);
@@ -67,12 +62,10 @@ public class HallFormController implements Initializable {
     public void setHallForUpdate(HallModel hall) {
         this.hallToUpdate = hall;
         this.isUpdateMode = true;
-        
-        // Populate form fields with existing hall data
+
         nameField.setText(hall.getName());
         capacitySpinner.getValueFactory().setValue(hall.getCapacity());
-        
-        // Update button text to reflect update operation
+
         saveButton.setText("Update");
     }
     
@@ -82,12 +75,10 @@ public class HallFormController implements Initializable {
     
     @FXML
     private void handleSaveButton(ActionEvent event) {
-        // Validate input
         if (!validateInput()) {
             return;
         }
-        
-        // Get data from form fields
+
         String name = nameField.getText().trim();
         int capacity = capacitySpinner.getValue();
         
@@ -104,27 +95,21 @@ public class HallFormController implements Initializable {
     }
     
     private void addHall(Connection connection, String name, int capacity) throws SQLException {
-        // SQL for inserting a new hall
         String sql = "INSERT INTO Halls (name, capacity) VALUES (?, ?)";
         
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            // Set parameters
             statement.setString(1, name);
             statement.setInt(2, capacity);
-            
-            // Execute the query
+
             int affectedRows = statement.executeUpdate();
             
             if (affectedRows > 0) {
-                // Hall added successfully
                 showInformationAlert("Success", "Hall Added", "The hall has been added successfully.");
-                
-                // Refresh the hall table in the parent view
+
                 if (refreshCallback != null) {
                     refreshCallback.run();
                 }
-                
-                // Close the form
+
                 closeForm();
             } else {
                 errorLabel.setText("Failed to add hall. Please try again.");
@@ -133,28 +118,22 @@ public class HallFormController implements Initializable {
     }
     
     private void updateHall(Connection connection, String name, int capacity) throws SQLException {
-        // SQL for updating an existing hall
         String sql = "UPDATE Halls SET name = ?, capacity = ? WHERE id = ?";
         
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            // Set parameters
             statement.setString(1, name);
             statement.setInt(2, capacity);
             statement.setInt(3, hallToUpdate.getId());
-            
-            // Execute the query
+
             int affectedRows = statement.executeUpdate();
             
             if (affectedRows > 0) {
-                // Hall updated successfully
                 showInformationAlert("Success", "Hall Updated", "The hall has been updated successfully.");
-                
-                // Refresh the hall table in the parent view
+
                 if (refreshCallback != null) {
                     refreshCallback.run();
                 }
-                
-                // Close the form
+
                 closeForm();
             } else {
                 errorLabel.setText("Failed to update hall. The hall may not exist anymore.");
@@ -173,24 +152,20 @@ public class HallFormController implements Initializable {
     }
     
     private boolean validateInput() {
-        // Reset error message
         errorLabel.setText("");
-        
-        // Validate hall name
+
         if (nameField.getText().trim().isEmpty()) {
             errorLabel.setText("Hall name is required");
             nameField.requestFocus();
             return false;
         }
-        
-        // Validate hall name length
+
         if (nameField.getText().trim().length() > 50) {
             errorLabel.setText("Hall name cannot exceed 50 characters");
             nameField.requestFocus();
             return false;
         }
-        
-        // All validations passed
+
         return true;
     }
     
@@ -199,21 +174,17 @@ public class HallFormController implements Initializable {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        
-        // Create custom header with icon
+
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView infoIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.INFO_CIRCLE);
         infoIcon.setSize("28");
         infoIcon.setFill(javafx.scene.paint.Color.valueOf("#2196F3"));
-        
-        // Set header with icon and text
+
         javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, infoIcon, new Label(header));
         headerBox.setAlignment(Pos.CENTER_LEFT);
-        
-        // Set dialog header content
+
         alert.getDialogPane().setHeader(headerBox);
-        
-        // Apply some styling
+
         alert.getDialogPane().setStyle("-fx-background-color: white;");
         alert.getDialogPane().getStyleClass().add("alert");
         

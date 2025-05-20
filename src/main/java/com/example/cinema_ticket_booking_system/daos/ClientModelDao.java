@@ -1,4 +1,4 @@
-package com.example.cinema_ticket_booking_system.dao;
+package com.example.cinema_ticket_booking_system.daos;
 
 import com.example.cinema_ticket_booking_system.models.ClientModel;
 import java.util.List;

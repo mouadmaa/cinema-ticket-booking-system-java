@@ -47,17 +47,14 @@ public class SeatFormController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize seat type combobox with fixed values
         ObservableList<String> seatTypes = FXCollections.observableArrayList(
             "Standard", "Premium", "Accessible"
         );
         seatTypeComboBox.setItems(seatTypes);
         seatTypeComboBox.getSelectionModel().selectFirst();
-        
-        // Load all halls for the hall combobox
+
         loadHalls();
-        
-        // Add validation listeners
+
         addValidationListeners();
     }
     
@@ -78,8 +75,7 @@ public class SeatFormController implements Initializable {
                 }
                 
                 hallComboBox.setItems(halls);
-                
-                // Set a custom cell factory to display hall names
+
                 hallComboBox.setCellFactory(param -> new ListCell<>() {
                     @Override
                     protected void updateItem(HallModel item, boolean empty) {
@@ -91,8 +87,7 @@ public class SeatFormController implements Initializable {
                         }
                     }
                 });
-                
-                // Set the same approach for the button cell
+
                 hallComboBox.setButtonCell(new ListCell<>() {
                     @Override
                     protected void updateItem(HallModel item, boolean empty) {
@@ -104,8 +99,7 @@ public class SeatFormController implements Initializable {
                         }
                     }
                 });
-                
-                // Select the first hall by default
+
                 if (!halls.isEmpty()) {
                     hallComboBox.getSelectionModel().selectFirst();
                 }
@@ -117,7 +111,6 @@ public class SeatFormController implements Initializable {
     }
     
     private void addValidationListeners() {
-        // Add listener to validate seat number field
         seatNumberField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.isEmpty()) {
                 seatNumberField.setStyle("-fx-border-color: red;");
@@ -125,8 +118,7 @@ public class SeatFormController implements Initializable {
                 seatNumberField.setStyle("");
             }
         });
-        
-        // Add listener to validate hall selection
+
         hallComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 hallComboBox.setStyle("-fx-border-color: red;");
@@ -134,8 +126,7 @@ public class SeatFormController implements Initializable {
                 hallComboBox.setStyle("");
             }
         });
-        
-        // Add listener to validate seat type selection
+
         seatTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isEmpty()) {
                 seatTypeComboBox.setStyle("-fx-border-color: red;");
@@ -148,25 +139,20 @@ public class SeatFormController implements Initializable {
     public void setSeatForUpdate(SeatModel seat) {
         this.seatForUpdate = seat;
         this.isUpdateMode = true;
-        
-        // Update form title
+
         formTitleLabel.setText("Update Seat");
-        
-        // Populate fields with seat data
+
         seatNumberField.setText(seat.getSeatNumber());
-        
-        // Find and select the correct hall
+
         for (HallModel hall : hallComboBox.getItems()) {
             if (hall.getId() == seat.getHallId()) {
                 hallComboBox.getSelectionModel().select(hall);
                 break;
             }
         }
-        
-        // Select the correct seat type
+
         seatTypeComboBox.getSelectionModel().select(seat.getSeatType());
-        
-        // Set availability checkbox
+
         availableCheckBox.setSelected(seat.getIsAvailable());
     }
     
@@ -193,22 +179,19 @@ public class SeatFormController implements Initializable {
     private boolean validateForm() {
         boolean isValid = true;
         StringBuilder errorMessage = new StringBuilder();
-        
-        // Validate Hall selection
+
         if (hallComboBox.getValue() == null) {
             hallComboBox.setStyle("-fx-border-color: red;");
             errorMessage.append("Please select a hall.\n");
             isValid = false;
         }
-        
-        // Validate Seat Number
+
         if (seatNumberField.getText().trim().isEmpty()) {
             seatNumberField.setStyle("-fx-border-color: red;");
             errorMessage.append("Please enter a seat number.\n");
             isValid = false;
         }
-        
-        // Validate Seat Type
+
         if (seatTypeComboBox.getValue() == null || seatTypeComboBox.getValue().isEmpty()) {
             seatTypeComboBox.setStyle("-fx-border-color: red;");
             errorMessage.append("Please select a seat type.\n");
@@ -241,7 +224,6 @@ public class SeatFormController implements Initializable {
                 int affectedRows = statement.executeUpdate();
                 
                 if (affectedRows > 0) {
-                    // Success
                     if (refreshCallback != null) {
                         refreshCallback.run();
                     }
@@ -273,7 +255,6 @@ public class SeatFormController implements Initializable {
                 int affectedRows = statement.executeUpdate();
                 
                 if (affectedRows > 0) {
-                    // Success
                     if (refreshCallback != null) {
                         refreshCallback.run();
                     }

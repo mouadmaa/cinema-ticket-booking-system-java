@@ -56,25 +56,20 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane contentPane;
 
-    // Store the current authenticated user
     private UserModel currentUser;
 
-    // Active button style
     private final String ACTIVE_BUTTON_STYLE = "-fx-background-color: #1E88E5; -fx-text-fill: white;";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Apply drop shadow effect to the content pane
         DropShadow shadow = new DropShadow();
         shadow.setOffsetY(3.0);
         shadow.setOffsetX(0.0);
         shadow.setColor(javafx.scene.paint.Color.color(0, 0, 0, 0.3));
         contentPane.setEffect(shadow);
-        
-        // Set up FontAwesome icons for buttons
+
         setupButtonIcons();
-        
-        // Load the user view by default when the dashboard is opened
+
         try {
             loadHomeView();
         } catch (IOException e) {
@@ -123,77 +118,66 @@ public class DashboardController implements Initializable {
     }
 
     private void setupButtonIcons() {
-        // Create a home icon
         FontAwesomeIconView homeIcon = new FontAwesomeIconView(FontAwesomeIcon.HOME);
         homeIcon.setSize("18");
         homeIcon.setFill(Color.WHITE);
         homeButton.setGraphic(homeIcon);
         homeButton.setGraphicTextGap(10);
 
-        // Create a user icon
         FontAwesomeIconView userIcon = new FontAwesomeIconView(FontAwesomeIcon.USERS);
         userIcon.setSize("18");
         userIcon.setFill(Color.WHITE);
         userButton.setGraphic(userIcon);
         userButton.setGraphicTextGap(10);
-        
-        // Create a movie icon for the movie management button
+
         FontAwesomeIconView movieIcon = new FontAwesomeIconView(FontAwesomeIcon.FILM);
         movieIcon.setSize("18");
         movieIcon.setFill(Color.WHITE);
         movieButton.setGraphic(movieIcon);
         movieButton.setGraphicTextGap(10);
-        
-        // Create a hall icon for the hall management button
+
         FontAwesomeIconView hallIcon = new FontAwesomeIconView(FontAwesomeIcon.BUILDING);
         hallIcon.setSize("18");
         hallIcon.setFill(Color.WHITE);
         hallButton.setGraphic(hallIcon);
         hallButton.setGraphicTextGap(10);
-        
-        // Create a seat icon for the seat management button
+
         FontAwesomeIconView seatIcon = new FontAwesomeIconView(FontAwesomeIcon.TICKET);
         seatIcon.setSize("18");
         seatIcon.setFill(Color.WHITE);
         seatButton.setGraphic(seatIcon);
         seatButton.setGraphicTextGap(10);
-        
-        // Create a show icon for the show management button
+
         FontAwesomeIconView showIcon = new FontAwesomeIconView(FontAwesomeIcon.CALENDAR);
         showIcon.setSize("18");
         showIcon.setFill(Color.WHITE);
         showButton.setGraphic(showIcon);
         showButton.setGraphicTextGap(10);
-        
-        // Create a client icon for the client management button
+
         FontAwesomeIconView clientIcon = new FontAwesomeIconView(FontAwesomeIcon.USER);
         clientIcon.setSize("18");
         clientIcon.setFill(Color.WHITE);
         clientButton.setGraphic(clientIcon);
         clientButton.setGraphicTextGap(10);
-        
-        // Create a booking icon for the booking management button
+
         FontAwesomeIconView bookingIcon = new FontAwesomeIconView(FontAwesomeIcon.TICKET);
         bookingIcon.setSize("18");
         bookingIcon.setFill(Color.WHITE);
         bookingButton.setGraphic(bookingIcon);
         bookingButton.setGraphicTextGap(10);
-        
-        // Create a ticket icon for the ticket management button
+
         FontAwesomeIconView ticketIcon = new FontAwesomeIconView(FontAwesomeIcon.CREDIT_CARD);
         ticketIcon.setSize("18");
         ticketIcon.setFill(Color.WHITE);
         ticketButton.setGraphic(ticketIcon);
         ticketButton.setGraphicTextGap(10);
-        
-        // Create a payment icon for the payment management button
+
         FontAwesomeIconView paymentIcon = new FontAwesomeIconView(FontAwesomeIcon.MONEY);
         paymentIcon.setSize("18");
         paymentIcon.setFill(Color.WHITE);
         paymentButton.setGraphic(paymentIcon);
         paymentButton.setGraphicTextGap(10);
-        
-        // Apply styling to buttons
+
         homeButton.getStyleClass().add("dashboard-button");
         userButton.getStyleClass().add("dashboard-button");
         movieButton.getStyleClass().add("dashboard-button");
@@ -257,7 +241,6 @@ public class DashboardController implements Initializable {
     }
     
     private void resetButtonStyles() {
-        // Reset all buttons to the default style
         String DEFAULT_BUTTON_STYLE = "-fx-background-color: #263238; -fx-text-fill: white;";
         homeButton.setStyle(DEFAULT_BUTTON_STYLE);
         userButton.setStyle(DEFAULT_BUTTON_STYLE);
@@ -314,36 +297,29 @@ public class DashboardController implements Initializable {
     private void setContentPane(AnchorPane view) {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(view);
-        
-        // Apply drop shadow effect to the loaded view
+
         DropShadow shadow = new DropShadow();
         shadow.setOffsetY(2.0);
         shadow.setOffsetX(0.0);
         shadow.setColor(javafx.scene.paint.Color.color(0, 0, 0, 0.2));
         view.setEffect(shadow);
-        
-        // Make the loaded view fill the entire contentPane
+
         AnchorPane.setTopAnchor(view, 0.0);
         AnchorPane.setRightAnchor(view, 0.0);
         AnchorPane.setBottomAnchor(view, 0.0);
         AnchorPane.setLeftAnchor(view, 0.0);
     }
-    
-    /**
-     * Generic method to set content in the contentPane that works with any layout type
-     */
+
     private void setContent(javafx.scene.Parent view) {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(view);
-        
-        // Apply drop shadow effect to the loaded view
+
         DropShadow shadow = new DropShadow();
         shadow.setOffsetY(2.0);
         shadow.setOffsetX(0.0);
         shadow.setColor(javafx.scene.paint.Color.color(0, 0, 0, 0.2));
         view.setEffect(shadow);
-        
-        // Make the loaded view fill the entire contentPane
+
         AnchorPane.setTopAnchor(view, 0.0);
         AnchorPane.setRightAnchor(view, 0.0);
         AnchorPane.setBottomAnchor(view, 0.0);

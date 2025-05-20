@@ -68,13 +68,10 @@ public class ShowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Setup table columns
         setupTableColumns();
-        
-        // Load movie data for the filter combobox
+
         loadMovies();
-        
-        // Add listeners to filters
+
         dateFilterPicker.valueProperty().addListener((obs, oldVal, newVal) -> {
             applyFilters();
         });
@@ -82,33 +79,28 @@ public class ShowController implements Initializable {
         movieFilterComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             applyFilters();
         });
-        
-        // Load all shows by default
+
         loadShows();
     }
     
     private void setupTableColumns() {
-        // Configure the table columns using property value factories
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         movieNameColumn.setCellValueFactory(cellData -> cellData.getValue().movieNameProperty());
         hallNameColumn.setCellValueFactory(cellData -> cellData.getValue().hallNameProperty());
         showDateColumn.setCellValueFactory(cellData -> cellData.getValue().showDateProperty());
         showTimeColumn.setCellValueFactory(cellData -> cellData.getValue().showTimeProperty());
         ticketPriceColumn.setCellValueFactory(cellData -> cellData.getValue().ticketPriceProperty().asObject());
-        
-        // Set column proportional widths
-        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 7); // 7% width
-        movieNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 25% width
-        hallNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-        showDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-        showTimeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        ticketPriceColumn.setMaxWidth(1f * Integer.MAX_VALUE * 13); // 13% width
-        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15); // 15% width
-        
-        // Set minimum width for actions column to ensure buttons fit
+
+        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 7);
+        movieNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 25);
+        hallNameColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+        showDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+        showTimeColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        ticketPriceColumn.setMaxWidth(1f * Integer.MAX_VALUE * 13);
+        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 15);
+
         actionsColumn.setMinWidth(80);
-        
-        // Format date column to display in a readable format
+
         showDateColumn.setCellFactory(column -> new TableCell<>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             
@@ -122,8 +114,7 @@ public class ShowController implements Initializable {
                 }
             }
         });
-        
-        // Format time column to display in a readable format
+
         showTimeColumn.setCellFactory(column -> new TableCell<>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             
@@ -137,8 +128,7 @@ public class ShowController implements Initializable {
                 }
             }
         });
-        
-        // Format price column to display with currency symbol
+
         ticketPriceColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
@@ -150,17 +140,14 @@ public class ShowController implements Initializable {
                 }
             }
         });
-        
-        // Configure actions column with edit and delete buttons
+
         setupActionsColumn();
-        
-        // Set alignment for numeric columns to center
+
         idColumn.setStyle("-fx-alignment: CENTER;");
         showDateColumn.setStyle("-fx-alignment: CENTER;");
         showTimeColumn.setStyle("-fx-alignment: CENTER;");
         ticketPriceColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
-        
-        // Ensure table uses all available width
+
         showTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
@@ -171,8 +158,7 @@ public class ShowController implements Initializable {
             String query = "SELECT id, title, genre, duration, release_date, description FROM Movies ORDER BY title";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 ResultSet resultSet = statement.executeQuery();
-                
-                // Add a null entry for "All Movies" option
+
                 movies.add(null);
                 
                 while (resultSet.next()) {
@@ -187,8 +173,7 @@ public class ShowController implements Initializable {
                 }
                 
                 movieFilterComboBox.setItems(movies);
-                
-                // Set a custom cell factory to display movie titles
+
                 movieFilterComboBox.setCellFactory(param -> new ListCell<>() {
                     @Override
                     protected void updateItem(MovieModel item, boolean empty) {
@@ -200,8 +185,7 @@ public class ShowController implements Initializable {
                         }
                     }
                 });
-                
-                // Set the same approach for the button cell
+
                 movieFilterComboBox.setButtonCell(new ListCell<>() {
                     @Override
                     protected void updateItem(MovieModel item, boolean empty) {
@@ -259,14 +243,12 @@ public class ShowController implements Initializable {
     
     private void applyFilters() {
         ObservableList<ShowModel> filteredShows = FXCollections.observableArrayList(allShows);
-        
-        // Apply date filter if selected
+
         if (dateFilterPicker.getValue() != null) {
             LocalDate selectedDate = dateFilterPicker.getValue();
             filteredShows.removeIf(show -> !show.getShowDate().equals(selectedDate));
         }
-        
-        // Apply movie filter if selected
+
         if (movieFilterComboBox.getValue() != null) {
             int selectedMovieId = movieFilterComboBox.getValue().getId();
             filteredShows.removeIf(show -> show.getMovieId() != selectedMovieId);
@@ -277,7 +259,7 @@ public class ShowController implements Initializable {
     
     @FXML
     private void handleAddShowButton(ActionEvent event) {
-        openShowForm(null); // Pass null for adding a new show
+        openShowForm(null);
     }
     
     private void openShowForm(ShowModel show) {
@@ -287,20 +269,17 @@ public class ShowController implements Initializable {
             
             ShowFormController controller = loader.getController();
             controller.setRefreshCallback(this::loadShows);
-            
-            // If updating, set the show to be updated
+
             if (show != null) {
                 controller.setShowForUpdate(show);
             }
-            
-            // Create a new stage for the dialog
+
             Stage stage = new Stage();
             stage.setTitle(show == null ? "Add Show" : "Update Show");
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(true);
-            
-            // Show the dialog and wait for it to close
+
             stage.showAndWait();
             
         } catch (IOException e) {
@@ -316,7 +295,6 @@ public class ShowController implements Initializable {
             private final HBox pane = new HBox(8, updateBtn, deleteBtn);
             
             {
-                // Create and style the update button with icon only
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView editIcon = 
                     new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(
                         de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.EDIT);
@@ -329,8 +307,7 @@ public class ShowController implements Initializable {
                                   "-fx-min-height: 24px; -fx-max-width: 24px; " +
                                   "-fx-max-height: 24px; -fx-padding: 2px;");
                 updateBtn.setTooltip(new Tooltip("Edit show"));
-                
-                // Create and style the delete button with icon only
+
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
                     new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(
                         de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
@@ -345,8 +322,7 @@ public class ShowController implements Initializable {
                 deleteBtn.setTooltip(new Tooltip("Delete show"));
                 
                 pane.setAlignment(javafx.geometry.Pos.CENTER);
-                
-                // Set button actions
+
                 updateBtn.setOnAction(event -> {
                     ShowModel show = getTableView().getItems().get(getIndex());
                     handleUpdateShow(show);
@@ -378,8 +354,7 @@ public class ShowController implements Initializable {
                                     show.getMovieName() + "\" in " + show.getHallName() + 
                                     " on " + show.getShowDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) +
                                     " at " + show.getShowTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "?");
-        
-        // Style the dialog
+
         DialogPane dialogPane = confirmDialog.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/com/example/cinema_ticket_booking_system/styles/application.css").toExternalForm());
         
@@ -392,7 +367,7 @@ public class ShowController implements Initializable {
                     
                     int rowsAffected = statement.executeUpdate();
                     if (rowsAffected > 0) {
-                        loadShows(); // Refresh the table
+                        loadShows();
                         showInformationAlert("Success", "Show Deleted", 
                                           "The show has been successfully deleted.");
                     } else {

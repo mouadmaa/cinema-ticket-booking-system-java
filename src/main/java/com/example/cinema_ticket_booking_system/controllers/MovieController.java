@@ -60,22 +60,17 @@ public class MovieController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Apply style to table
         movieTableView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
-        
-        // Style pagination and control buttons with FontAwesome icons
+
         setupButtons();
-        
-        // Setup table columns and load data
+
         setupTableColumns();
         loadMovies();
-    
-        // Configure table to automatically resize columns to fit content
+
         movieTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
     private void setupButtons() {
-        // Style the add movie button with a film icon
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView addIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.FILM);
         addIcon.setFill(javafx.scene.paint.Color.WHITE);
@@ -84,30 +79,25 @@ public class MovieController implements Initializable {
     }
 
     private void setupTableColumns() {
-        // Use lambda instead of PropertyValueFactory for more reliable binding
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         genreColumn.setCellValueFactory(cellData -> cellData.getValue().genreProperty());
         durationColumn.setCellValueFactory(cellData -> cellData.getValue().durationProperty().asObject());
         releaseDateColumn.setCellValueFactory(cellData -> cellData.getValue().releaseDateProperty());
         descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
-        
-        // Set column proportional widths based on content
-        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 5); // 5% width
-        titleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 25); // 25% width
-        genreColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        durationColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10); // 10% width
-        releaseDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12); // 12% width
-        descriptionColumn.setMaxWidth(1f * Integer.MAX_VALUE * 30); // 30% width
-        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8); // 8% width
-        
-        // Set minimum width for actions column to ensure buttons fit
+
+        idColumn.setMaxWidth(1f * Integer.MAX_VALUE * 5);
+        titleColumn.setMaxWidth(1f * Integer.MAX_VALUE * 25);
+        genreColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        durationColumn.setMaxWidth(1f * Integer.MAX_VALUE * 10);
+        releaseDateColumn.setMaxWidth(1f * Integer.MAX_VALUE * 12);
+        descriptionColumn.setMaxWidth(1f * Integer.MAX_VALUE * 30);
+        actionsColumn.setMaxWidth(1f * Integer.MAX_VALUE * 8);
+
         actionsColumn.setMinWidth(70);
-        
-        // Set alignment for actions column to center
+
         actionsColumn.setStyle("-fx-alignment: CENTER;");
-        
-        // Format duration column to display as hours and minutes
+
         durationColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(Integer item, boolean empty) {
@@ -125,8 +115,7 @@ public class MovieController implements Initializable {
                 }
             }
         });
-        
-        // Format release date column
+
         releaseDateColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(LocalDate item, boolean empty) {
@@ -138,8 +127,7 @@ public class MovieController implements Initializable {
                 }
             }
         });
-        
-        // Limit description text and add tooltip for full text
+
         descriptionColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -154,8 +142,7 @@ public class MovieController implements Initializable {
                 }
             }
         });
-        
-        // Configure the actions column with update and delete buttons
+
         setupActionsColumn();
     }
 
@@ -163,7 +150,6 @@ public class MovieController implements Initializable {
         ObservableList<MovieModel> movies = FXCollections.observableArrayList();
 
         try (Connection connection = SingletonConnection.getConnection()) {
-            // Fetch all movies
             String query = "SELECT id, title, genre, duration, release_date, description " +
                     "FROM Movies ORDER BY id";
     
@@ -186,7 +172,6 @@ public class MovieController implements Initializable {
     
             movieTableView.setItems(movies);
 
-            // Ensure columns fit the data after loading
             autoResizeColumns();
 
         } catch (SQLException e) {
@@ -199,39 +184,31 @@ public class MovieController implements Initializable {
      * Adjust columns to fit content after data is loaded
      */
     private void autoResizeColumns() {
-        // Ensure the table uses all available width
         movieTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Optionally force a resize for all columns
         movieTableView.getColumns().forEach(column -> {
-            // Trick to refresh the column width calculations
             double width = column.getWidth();
             column.setPrefWidth(width);
         });
     }
 
-    // Pagination methods removed
 
     private void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        
-        // Create custom header with icon
+
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView errorIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.EXCLAMATION_CIRCLE);
         errorIcon.setSize("28");
         errorIcon.setFill(javafx.scene.paint.Color.valueOf("#F44336"));
-        
-        // Set header with icon and text
+
         javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, errorIcon, new Label(header));
         headerBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        
-        // Set dialog header content
+
         alert.getDialogPane().setHeader(headerBox);
-        
-        // Apply some styling
+
         alert.getDialogPane().setStyle("-fx-background-color: white;");
         alert.getDialogPane().getStyleClass().add("alert");
         
@@ -240,45 +217,38 @@ public class MovieController implements Initializable {
 
     @FXML
     private void handleAddMovieButton(ActionEvent event) {
-        openMovieForm(null); // Pass null for adding a new movie
+        openMovieForm(null);
     }
     
     private void handleUpdateMovie(MovieModel movie) {
-        openMovieForm(movie); // Pass the movie for updating
+        openMovieForm(movie);
     }
     
     private void handleDeleteMovie(MovieModel movie) {
-        // Create confirmation alert
         Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
         confirmDialog.setTitle("Confirm Delete");
         confirmDialog.setHeaderText("Delete Movie");
         confirmDialog.setContentText("Are you sure you want to delete movie \"" + movie.getTitle() + "\"?");
-        
-        // Create custom header with warning icon
+
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView warningIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.WARNING);
         warningIcon.setSize("28");
         warningIcon.setFill(javafx.scene.paint.Color.valueOf("#FF9800"));
-        
-        // Set header with icon
+
         javafx.scene.layout.HBox headerBox = new javafx.scene.layout.HBox(10, warningIcon, new Label("Delete Movie"));
         headerBox.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-        
-        // Style the dialog
+
         confirmDialog.getDialogPane().setHeader(headerBox);
         confirmDialog.getDialogPane().setStyle("-fx-background-color: white;");
         confirmDialog.getDialogPane().getStyleClass().add("alert");
-        
-        // Create custom buttons
+
         ButtonType cancelButtonType = new ButtonType("Cancel");
         ButtonType deleteButtonType = new ButtonType("Delete");
         confirmDialog.getButtonTypes().setAll(cancelButtonType, deleteButtonType);
-        
-        // Custom styling for buttons
+
         Button deleteButton = (Button) confirmDialog.getDialogPane().lookupButton(deleteButtonType);
         deleteButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
-        
-        // Add a trash icon to delete button
+
         de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
             new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
         deleteIcon.setFill(javafx.scene.paint.Color.WHITE);
@@ -296,26 +266,21 @@ public class MovieController implements Initializable {
     
     private void openMovieForm(MovieModel movie) {
         try {
-            // Load the movie form FXML
             FXMLLoader loader = new FXMLLoader(MainApplication.getFxmlUrl("MovieFormView.fxml"));
             Parent root = loader.load();
-            
-            // Get the controller and set callback to refresh movie table after save
+
             MovieFormController controller = loader.getController();
             controller.setRefreshCallback(this::loadMovies);
-            
-            // If updating, set the movie to be updated
+
             if (movie != null) {
                 controller.setMovieForUpdate(movie);
             }
-            
-            // Create a new stage for the dialog
+
             Stage stage = new Stage();
             stage.setTitle(movie == null ? "Add Movie" : "Update Movie");
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // Block interaction with other windows
-            
-            // Show the dialog and wait for it to close
+            stage.initModality(Modality.APPLICATION_MODAL);
+
             stage.showAndWait();
             
         } catch (IOException e) {
@@ -332,7 +297,6 @@ public class MovieController implements Initializable {
                 int affectedRows = statement.executeUpdate();
                 
                 if (affectedRows > 0) {
-                    // Success - refresh the table
                     loadMovies();
                 } else {
                     showErrorAlert("Error", "Delete Failed", "No movie was deleted. The movie may not exist.");
@@ -351,7 +315,6 @@ public class MovieController implements Initializable {
             private final HBox pane = new HBox(8, updateBtn, deleteBtn);
             
             {
-                // Create and style the update button with icon only
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView editIcon = 
                     new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.EDIT);
                 editIcon.setSize("12");
@@ -360,8 +323,7 @@ public class MovieController implements Initializable {
                 updateBtn.setGraphic(editIcon);
                 updateBtn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 2; -fx-min-width: 24px; -fx-min-height: 24px; -fx-max-width: 24px; -fx-max-height: 24px; -fx-padding: 2px;");
                 updateBtn.setTooltip(new javafx.scene.control.Tooltip("Edit movie"));
-                
-                // Create and style the delete button with icon only
+
                 de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView deleteIcon = 
                     new de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView(de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon.TRASH);
                 deleteIcon.setSize("12");
@@ -372,8 +334,7 @@ public class MovieController implements Initializable {
                 deleteBtn.setTooltip(new javafx.scene.control.Tooltip("Delete movie"));
                 
                 pane.setAlignment(javafx.geometry.Pos.CENTER);
-                
-                // Set button actions
+
                 updateBtn.setOnAction(event -> {
                     MovieModel movie = getTableView().getItems().get(getIndex());
                     handleUpdateMovie(movie);

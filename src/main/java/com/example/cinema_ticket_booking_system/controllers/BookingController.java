@@ -45,15 +45,13 @@ public class BookingController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("clientName"));
         showInfoColumn.setCellValueFactory(new PropertyValueFactory<>("showInfo"));
         seatInfoColumn.setCellValueFactory(new PropertyValueFactory<>("seatInfo"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         bookingDateColumn.setCellValueFactory(new PropertyValueFactory<>("bookingDate"));
-        
-        // Format date column
+
         bookingDateColumn.setCellFactory(column -> new TableCell<>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             
@@ -67,8 +65,7 @@ public class BookingController implements Initializable {
                 }
             }
         });
-        
-        // Format status column with colors
+
         statusColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -95,11 +92,9 @@ public class BookingController implements Initializable {
                 }
             }
         });
-        
-        // Load data from the database
+
         refreshBookingTable();
-        
-        // Adjust column widths
+
         bookingTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
@@ -113,8 +108,7 @@ public class BookingController implements Initializable {
         try {
             Connection conn = SingletonConnection.getConnection();
             Statement stmt = conn.createStatement();
-            
-            // Join with Client, Show, and Seat tables to get more information
+
             String query = "SELECT b.*, " +
                     "CONCAT(c.first_name, ' ', c.last_name) AS client_name, " +
                     "CONCAT(m.title, ' (', TO_CHAR(s.show_date, 'YYYY-MM-DD HH24:MI'), ')') AS show_info, " +
@@ -147,7 +141,6 @@ public class BookingController implements Initializable {
             
             rs.close();
             stmt.close();
-            // Don't close the connection as it's managed by SingletonConnection
             
         } catch (SQLException e) {
             System.err.println("Error fetching bookings from database: " + e.getMessage());

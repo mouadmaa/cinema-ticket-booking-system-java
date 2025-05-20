@@ -52,7 +52,6 @@ public class TicketController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         ticketCodeColumn.setCellValueFactory(new PropertyValueFactory<>("ticketCode"));
         clientNameColumn.setCellValueFactory(new PropertyValueFactory<>("clientName"));
@@ -61,8 +60,7 @@ public class TicketController implements Initializable {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         issueDateColumn.setCellValueFactory(new PropertyValueFactory<>("issueDate"));
-        
-        // Format price column
+
         priceColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(BigDecimal item, boolean empty) {
@@ -74,8 +72,7 @@ public class TicketController implements Initializable {
                 }
             }
         });
-        
-        // Format date column
+
         issueDateColumn.setCellFactory(column -> new TableCell<>() {
             private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             
@@ -89,8 +86,7 @@ public class TicketController implements Initializable {
                 }
             }
         });
-        
-        // Format status column with colors
+
         statusColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -117,8 +113,7 @@ public class TicketController implements Initializable {
                 }
             }
         });
-        
-        // Format ticket code column
+
         ticketCodeColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -131,11 +126,9 @@ public class TicketController implements Initializable {
                 }
             }
         });
-        
-        // Load data from the database
+
         refreshTicketTable();
-        
-        // Adjust column widths
+
         ticketTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
@@ -149,8 +142,7 @@ public class TicketController implements Initializable {
         try {
             Connection conn = SingletonConnection.getConnection();
             Statement stmt = conn.createStatement();
-            
-            // Join with Booking, Client, Show, and Seat tables to get more information
+
             String query = "SELECT t.*, " +
                     "CONCAT(c.first_name, ' ', c.last_name) AS client_name, " +
                     "CONCAT(m.title, ' (', TO_CHAR(s.show_date, 'YYYY-MM-DD HH24:MI'), ')') AS show_info, " +
@@ -185,7 +177,6 @@ public class TicketController implements Initializable {
             
             rs.close();
             stmt.close();
-            // Don't close the connection as it's managed by SingletonConnection
             
         } catch (SQLException e) {
             System.err.println("Error fetching tickets from database: " + e.getMessage());

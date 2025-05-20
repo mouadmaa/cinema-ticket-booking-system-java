@@ -39,17 +39,14 @@ public class ClientController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Configure table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        
-        // Load data from the database
+
         refreshClientTable();
-        
-        // Adjust column widths
+
         clientTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
     
@@ -78,7 +75,6 @@ public class ClientController implements Initializable {
             
             rs.close();
             stmt.close();
-            // Don't close the connection as it's managed by SingletonConnection
             
         } catch (SQLException e) {
             System.err.println("Error fetching clients from database: " + e.getMessage());
