@@ -212,7 +212,7 @@ public class DashboardController implements Initializable {
         resetButtonStyles();
         userButton.setStyle(ACTIVE_BUTTON_STYLE);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.getFxmlUrl("UserView.fxml"));
-        AnchorPane userView = fxmlLoader.load();
+        BorderPane userView = fxmlLoader.load();
         setContent(userView);
     }
     

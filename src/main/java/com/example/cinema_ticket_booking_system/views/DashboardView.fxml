@@ -180,9 +180,9 @@
             
             <!-- Footer area -->
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-                <Label text="Mouad Maaroufi" textFill="#b0bec5">
-                    <font>
-                        <Font size="12.0" />
+            <Label text="Mouad Maaroufi" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="12.0" />
                     </font>
                     <VBox.margin>
                         <Insets bottom="15.0" />
