@@ -8,7 +8,7 @@ public class SeatModel {
     private final StringProperty seatNumber;
     private final StringProperty seatType;
     private final BooleanProperty isAvailable;
-    private final StringProperty hallName; // For display purposes
+    private final StringProperty hallName;
 
     public SeatModel(int id, int hallId, String seatNumber, String seatType, boolean isAvailable, String hallName) {
         this.id = new SimpleIntegerProperty(id);
@@ -19,7 +19,6 @@ public class SeatModel {
         this.hallName = new SimpleStringProperty(hallName);
     }
 
-    // ID property methods
     public int getId() {
         return id.get();
     }
@@ -32,7 +31,6 @@ public class SeatModel {
         this.id.set(id);
     }
 
-    // Hall ID property methods
     public int getHallId() {
         return hallId.get();
     }
@@ -45,7 +43,6 @@ public class SeatModel {
         this.hallId.set(hallId);
     }
 
-    // Seat number property methods
     public String getSeatNumber() {
         return seatNumber.get();
     }
@@ -58,7 +55,6 @@ public class SeatModel {
         this.seatNumber.set(seatNumber);
     }
 
-    // Seat type property methods
     public String getSeatType() {
         return seatType.get();
     }
@@ -71,7 +67,6 @@ public class SeatModel {
         this.seatType.set(seatType);
     }
 
-    // Availability property methods
     public boolean getIsAvailable() {
         return isAvailable.get();
     }
@@ -84,7 +79,6 @@ public class SeatModel {
         this.isAvailable.set(isAvailable);
     }
 
-    // Hall name property methods
     public String getHallName() {
         return hallName.get();
     }

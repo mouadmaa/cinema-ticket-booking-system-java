@@ -24,7 +24,6 @@ public class UserModel {
         this.password = new SimpleStringProperty(password);
     }
 
-    // Property accessors
     public IntegerProperty idProperty() {
         return id;
     }
@@ -57,7 +56,6 @@ public class UserModel {
         return password;
     }
     
-    // Standard getters
     public int getId() {
         return id.get();
     }

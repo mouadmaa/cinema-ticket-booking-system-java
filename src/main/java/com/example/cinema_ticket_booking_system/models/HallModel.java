@@ -5,9 +5,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-/**
- * Model class for Hall entity
- */
 public class HallModel {
     private final IntegerProperty id;
     private final StringProperty name;
@@ -19,7 +16,6 @@ public class HallModel {
         this.capacity = new SimpleIntegerProperty(capacity);
     }
 
-    // ID property methods
     public int getId() {
         return id.get();
     }
@@ -32,7 +28,6 @@ public class HallModel {
         this.id.set(id);
     }
 
-    // Name property methods
     public String getName() {
         return name.get();
     }
@@ -45,7 +40,6 @@ public class HallModel {
         this.name.set(name);
     }
 
-    // Capacity property methods
     public int getCapacity() {
         return capacity.get();
     }

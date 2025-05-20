@@ -12,8 +12,7 @@ public class ShowModel {
     private final ObjectProperty<LocalDate> showDate;
     private final ObjectProperty<LocalTime> showTime;
     private final DoubleProperty ticketPrice;
-    
-    // For display purposes
+
     private final StringProperty movieName;
     private final StringProperty hallName;
 
@@ -29,7 +28,6 @@ public class ShowModel {
         this.hallName = new SimpleStringProperty(hallName);
     }
 
-    // ID property methods
     public int getId() {
         return id.get();
     }
@@ -42,7 +40,6 @@ public class ShowModel {
         this.id.set(id);
     }
 
-    // Movie ID property methods
     public int getMovieId() {
         return movieId.get();
     }
@@ -55,7 +52,6 @@ public class ShowModel {
         this.movieId.set(movieId);
     }
 
-    // Hall ID property methods
     public int getHallId() {
         return hallId.get();
     }
@@ -68,7 +64,6 @@ public class ShowModel {
         this.hallId.set(hallId);
     }
 
-    // Show date property methods
     public LocalDate getShowDate() {
         return showDate.get();
     }
@@ -81,7 +76,6 @@ public class ShowModel {
         this.showDate.set(showDate);
     }
 
-    // Show time property methods
     public LocalTime getShowTime() {
         return showTime.get();
     }
@@ -94,7 +88,6 @@ public class ShowModel {
         this.showTime.set(showTime);
     }
 
-    // Ticket price property methods
     public double getTicketPrice() {
         return ticketPrice.get();
     }
@@ -107,7 +100,6 @@ public class ShowModel {
         this.ticketPrice.set(ticketPrice);
     }
 
-    // Movie name property methods (for display)
     public String getMovieName() {
         return movieName.get();
     }
@@ -120,7 +112,6 @@ public class ShowModel {
         this.movieName.set(movieName);
     }
 
-    // Hall name property methods (for display)
     public String getHallName() {
         return hallName.get();
     }
@@ -132,8 +123,7 @@ public class ShowModel {
     public void setHallName(String hallName) {
         this.hallName.set(hallName);
     }
-    
-    // Add availability property to support the form
+
     private final IntegerProperty availability = new SimpleIntegerProperty(100);
     
     public int getAvailability() {

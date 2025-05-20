@@ -12,8 +12,7 @@ public class PaymentModel {
     private final ObjectProperty<BigDecimal> amount;
     private final StringProperty paymentMethod;
     private final ObjectProperty<LocalDateTime> paymentDate;
-    
-    // Additional fields for display purposes
+
     private final StringProperty clientName;
     private final StringProperty showInfo;
 
@@ -30,7 +29,6 @@ public class PaymentModel {
         this.showInfo = new SimpleStringProperty(showInfo);
     }
 
-    // Property accessors
     public IntegerProperty idProperty() {
         return id;
     }
@@ -62,8 +60,7 @@ public class PaymentModel {
     public StringProperty showInfoProperty() {
         return showInfo;
     }
-    
-    // Standard getters
+
     public int getId() {
         return id.get();
     }

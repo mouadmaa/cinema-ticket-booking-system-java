@@ -11,8 +11,6 @@ public class BookingModel {
     private final IntegerProperty seatId;
     private final StringProperty status;
     private final ObjectProperty<LocalDateTime> bookingDate;
-    
-    // Additional fields for display purposes
     private final StringProperty clientName;
     private final StringProperty showInfo;
     private final StringProperty seatInfo;
@@ -31,7 +29,6 @@ public class BookingModel {
         this.seatInfo = new SimpleStringProperty(seatInfo);
     }
 
-    // Property accessors
     public IntegerProperty idProperty() {
         return id;
     }
@@ -67,8 +64,7 @@ public class BookingModel {
     public StringProperty seatInfoProperty() {
         return seatInfo;
     }
-    
-    // Standard getters
+
     public int getId() {
         return id.get();
     }

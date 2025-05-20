@@ -21,7 +21,6 @@ public class MovieModel {
         this.description = new SimpleStringProperty(description != null ? description : "");
     }
 
-    // Property accessors
     public IntegerProperty idProperty() {
         return id;
     }
@@ -46,7 +45,6 @@ public class MovieModel {
         return description;
     }
 
-    // Standard getters
     public int getId() {
         return id.get();
     }
@@ -70,8 +68,7 @@ public class MovieModel {
     public String getDescription() {
         return description.get();
     }
-    
-    // Format duration as "X hr Y min"
+
     public String getFormattedDuration() {
         int hours = duration.get() / 60;
         int minutes = duration.get() % 60;

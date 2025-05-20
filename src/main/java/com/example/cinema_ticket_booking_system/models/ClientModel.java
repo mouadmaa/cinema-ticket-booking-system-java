@@ -20,7 +20,6 @@ public class ClientModel {
         this.phoneNumber = new SimpleStringProperty(phoneNumber != null ? phoneNumber : "");
     }
 
-    // Property accessors
     public IntegerProperty idProperty() {
         return id;
     }
@@ -45,7 +44,6 @@ public class ClientModel {
         return phoneNumber;
     }
     
-    // Standard getters
     public int getId() {
         return id.get();
     }

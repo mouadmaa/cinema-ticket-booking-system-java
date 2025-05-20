@@ -13,7 +13,6 @@ public class TicketModel {
     private final ObjectProperty<LocalDateTime> issueDate;
     private final ObjectProperty<BigDecimal> price;
     
-    // Additional fields for display purposes
     private final StringProperty clientName;
     private final StringProperty showInfo;
     private final StringProperty seatInfo;
@@ -32,7 +31,6 @@ public class TicketModel {
         this.seatInfo = new SimpleStringProperty(seatInfo);
     }
 
-    // Property accessors
     public IntegerProperty idProperty() {
         return id;
     }
@@ -69,7 +67,6 @@ public class TicketModel {
         return seatInfo;
     }
     
-    // Standard getters
     public int getId() {
         return id.get();
     }
